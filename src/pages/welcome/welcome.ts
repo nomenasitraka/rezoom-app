@@ -29,7 +29,7 @@ export class WelcomePage {
 		 console.log('Barcode data', barcodeData);
 		 this.data = barcodeData;
 		}).catch(err => {
-		    console.log('Error', err);
+		    alert(err);
 		});
   }
 
