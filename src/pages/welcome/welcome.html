@@ -1,0 +1,20 @@
+<ion-content scroll="false">
+  <div class="splash-bg"></div>
+  <div class="splash-info">
+    <div class="splash-logo"></div>
+    <div class="splash-intro">
+      BIENVENU DANS REZOOM
+    </div>
+  </div>
+  <div padding>
+    <button ion-button block (click)="scan()">SCAN QR CODE</button>
+    <!-- <button ion-button block (click)="login()" class="login">{{ 'LOGIN' | translate }}</button> -->
+
+    <ion-list>
+
+      <ion-item>Cancelled : {{ data.cancelled }}</ion-item>
+      <ion-item>Format : {{ data.format }}</ion-item>
+      <ion-item>Text : {{ data.text }}</ion-item>
+    </ion-list>
+  </div>
+</ion-content>
