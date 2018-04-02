@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 339:
+/***/ 343:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(352);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(356);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -44,7 +44,7 @@ var WelcomePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 352:
+/***/ 356:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52,6 +52,7 @@ var WelcomePageModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_qr_scanner__ = __webpack_require__(226);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -64,6 +65,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 /**
  * The Welcome Page is a splash page that quickly describes the app,
  * and then directs the user to create an account or log in.
@@ -71,22 +73,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * we recommend not using the Welcome page.
 */
 var WelcomePage = /** @class */ (function () {
-    function WelcomePage(navCtrl, barcodeScanner) {
+    function WelcomePage(navCtrl, barcodeScanner, qrScanner) {
         this.navCtrl = navCtrl;
         this.barcodeScanner = barcodeScanner;
+        this.qrScanner = qrScanner;
         this.data = {};
     }
     WelcomePage.prototype.scan = function () {
         var _this = this;
-        this.option = {
+        /*this.option = {
             prompt: "Scannez votre QR Code"
-        };
-        this.barcodeScanner.scan(this.option).then(function (barcodeData) {
-            console.log('Barcode data', barcodeData);
-            _this.data = barcodeData;
-        }).catch(function (err) {
-            alert(err);
-        });
+        }
+        this.barcodeScanner.scan(this.option).then(barcodeData => {
+             console.log('Barcode data', barcodeData);
+             this.data = barcodeData;
+            }).catch(err => {
+                alert(err);
+            });*/
+        this.qrScanner.prepare()
+            .then(function (status) {
+            if (status.authorized) {
+                // camera permission was granted
+                // start scanning
+                var scanSub_1 = _this.qrScanner.scan().subscribe(function (text) {
+                    alert('Scanned something ' + text);
+                    _this.qrScanner.hide(); // hide camera preview
+                    scanSub_1.unsubscribe(); // stop scanning
+                });
+                // show camera preview
+                _this.qrScanner.show();
+                // wait for user to scan something, then the observable callback will be called
+            }
+            else if (status.denied) {
+                // camera permission was permanently denied
+                // you must use QRScanner.openSettings() method to guide the user to the settings page
+                // then they can grant the permission from there
+            }
+            else {
+                // permission was denied, but not permanently. You can ask for permission again at a later time.
+            }
+        }).catch(function (e) { return alert('Error is' + e); });
     };
     WelcomePage.prototype.login = function () {
         this.navCtrl.push('LoginPage');
@@ -98,10 +124,9 @@ var WelcomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-welcome',template:/*ion-inline-start:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/'<ion-content scroll="false">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n      BIENVENU DANS REZOOM\n    </div>\n  </div>\n  <div padding>\n    <button ion-button block (click)="scan()">SCAN QR CODE</button>\n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n    <ion-list>\n\n      <ion-item>Cancelled : {{ data.cancelled }}</ion-item>\n      <ion-item>Format : {{ data.format }}</ion-item>\n      <ion-item>Text : {{ data.text }}</ion-item>\n    </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_qr_scanner__["a" /* QRScanner */]])
     ], WelcomePage);
     return WelcomePage;
-    var _a, _b;
 }());
 
 //# sourceMappingURL=welcome.js.map

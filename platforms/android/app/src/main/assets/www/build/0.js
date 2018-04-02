@@ -85,7 +85,7 @@ var WelcomePage = /** @class */ (function () {
             console.log('Barcode data', barcodeData);
             _this.data = barcodeData;
         }).catch(function (err) {
-            console.log('Error', err);
+            alert(err);
         });
     };
     WelcomePage.prototype.login = function () {
@@ -98,9 +98,10 @@ var WelcomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-welcome',template:/*ion-inline-start:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/'<ion-content scroll="false">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n      BIENVENU DANS REZOOM\n    </div>\n  </div>\n  <div padding>\n    <button ion-button block (click)="scan()">SCAN QR CODE</button>\n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n    <ion-list>\n\n      <ion-item>Cancelled : {{ data.cancelled }}</ion-item>\n      <ion-item>Format : {{ data.format }}</ion-item>\n      <ion-item>Text : {{ data.text }}</ion-item>\n    </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]) === "function" && _b || Object])
     ], WelcomePage);
     return WelcomePage;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=welcome.js.map

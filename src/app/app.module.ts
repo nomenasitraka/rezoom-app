@@ -16,6 +16,7 @@ import { Api } from '../providers/providers';
 import { MyApp } from './app.component';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { QRScanner } from "@ionic-native/qr-scanner";
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -61,6 +62,7 @@ export function provideSettings(storage: Storage) {
   ],
   providers: [
     BarcodeScanner,
+    QRScanner,
     Api,
     Items,
     User,
