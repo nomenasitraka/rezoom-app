@@ -92,6 +92,7 @@ var WelcomePage = /** @class */ (function () {
             });*/
         this.qrScanner.prepare()
             .then(function (status) {
+            alert("scanning. Status : " + status.authorized);
             if (status.authorized) {
                 // camera permission was granted
                 // start scanning
@@ -100,16 +101,21 @@ var WelcomePage = /** @class */ (function () {
                     _this.qrScanner.hide(); // hide camera preview
                     scanSub_1.unsubscribe(); // stop scanning
                 });
+                _this.qrScanner.resumePreview();
                 // show camera preview
-                _this.qrScanner.show();
+                _this.qrScanner.show().then(function (data2) {
+                    alert("datashowing: " + data2.showing);
+                });
                 // wait for user to scan something, then the observable callback will be called
             }
             else if (status.denied) {
+                alert('Denied');
                 // camera permission was permanently denied
                 // you must use QRScanner.openSettings() method to guide the user to the settings page
                 // then they can grant the permission from there
             }
             else {
+                alert('else');
                 // permission was denied, but not permanently. You can ask for permission again at a later time.
             }
         }).catch(function (e) { return alert('Error is' + e); });
@@ -122,11 +128,12 @@ var WelcomePage = /** @class */ (function () {
     };
     WelcomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-welcome',template:/*ion-inline-start:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/'<ion-content scroll="false">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n      BIENVENU DANS REZOOM\n    </div>\n  </div>\n  <div padding>\n    <button ion-button block (click)="scan()">SCAN QR CODE</button>\n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n    <ion-list>\n\n      <ion-item>Cancelled : {{ data.cancelled }}</ion-item>\n      <ion-item>Format : {{ data.format }}</ion-item>\n      <ion-item>Text : {{ data.text }}</ion-item>\n    </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/
+            selector: 'page-welcome',template:/*ion-inline-start:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/'<ion-content scroll="false" style="background: none transparent;">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n      BIENVENU DANS REZOOM!\n    </div>\n  </div>\n  <div padding>\n    <button ion-button block (click)="scan()">SCAN QR CODE</button>\n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n    <ion-list>\n\n      <ion-item>Cancelled : {{ data.cancelled }}</ion-item>\n      <ion-item>Format : {{ data.format }}</ion-item>\n      <ion-item>Text : {{ data.text }}</ion-item>\n    </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_qr_scanner__["a" /* QRScanner */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_qr_scanner__["a" /* QRScanner */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_qr_scanner__["a" /* QRScanner */]) === "function" && _c || Object])
     ], WelcomePage);
     return WelcomePage;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=welcome.js.map

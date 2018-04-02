@@ -34,6 +34,7 @@ export class WelcomePage {
 		});*/
     this.qrScanner.prepare()
       .then((status: QRScannerStatus) => {
+        alert("scanning. Status : "+status.authorized);
         if (status.authorized) {
           // camera permission was granted
 
@@ -45,15 +46,21 @@ export class WelcomePage {
             scanSub.unsubscribe(); // stop scanning
           }); 
 
+          this.qrScanner.resumePreview();
+
           // show camera preview
-          this.qrScanner.show();
+          this.qrScanner.show().then((data2: QRScannerStatus) =>{
+            alert("datashowing: "+ data2.showing);
+          } );
 
           // wait for user to scan something, then the observable callback will be called
         } else if (status.denied) {
+          alert('Denied')
           // camera permission was permanently denied
           // you must use QRScanner.openSettings() method to guide the user to the settings page
           // then they can grant the permission from there
         } else {
+          alert('else')
           // permission was denied, but not permanently. You can ask for permission again at a later time.
         }
       }).catch((e: any) => alert('Error is'+ e));
