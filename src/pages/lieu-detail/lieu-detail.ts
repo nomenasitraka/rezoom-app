@@ -183,7 +183,11 @@ export class LieuDetailPage {
 	    params : {'fileName': filename}
 	  };
 	 
-	  const fileTransfer: TransferObject = this.transfer.create();
+	  /*const fileTransfer: TransferObject = this.transfer.create();*/
+
+	   let reader = new FileReader();
+
+	   reader.readAsDataURL(filename);
 	 
 	  this.loading = this.loadingCtrl.create({
 	    content: 'Uploading...',
@@ -196,7 +200,7 @@ export class LieuDetailPage {
 	    this.presentToast('Image succesful uploaded.');
 	  }, err => {
 	    this.loading.dismissAll()
-	    this.presentToast('Error while uploading file.');
+	    this.presentToast('Error while uploading file. : '+ err);
 	  });
 	}
 

@@ -215,7 +215,7 @@ var LieuDetailPage = /** @class */ (function () {
         // File for Upload
         var targetPath = this.pathForImage(this.lastImage);
         alert("UPLOADING");
-        console.log(targetPath);
+        alert(targetPath);
         // File name only
         var filename = this.lastImage;
         var options = {
@@ -225,7 +225,9 @@ var LieuDetailPage = /** @class */ (function () {
             mimeType: "multipart/form-data",
             params: { 'fileName': filename }
         };
-        var fileTransfer = this.transfer.create();
+        /*const fileTransfer: TransferObject = this.transfer.create();*/
+        var reader = new FileReader();
+        reader.readAsDataURL(filename);
         this.loading = this.loadingCtrl.create({
             content: 'Uploading...',
         });
