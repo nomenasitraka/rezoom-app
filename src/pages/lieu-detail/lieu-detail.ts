@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RezoomProvider } from '../../providers/rezoom/rezoom';
 
+import { NavController, ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
+ 
+
 /**
  * Generated class for the LieuDetailPage page.
  *

@@ -19,6 +19,11 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { QRScanner } from "@ionic-native/qr-scanner";
 import { RezoomProvider } from '../providers/rezoom/rezoom';
 
+import { File } from '@ionic-native/file';
+import { Transfer } from '@ionic-native/transfer';
+import { FilePath } from '@ionic-native/file-path';
+import { Camera } from '@ionic-native/camera';
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -70,6 +75,10 @@ export function provideSettings(storage: Storage) {
     Camera,
     SplashScreen,
     StatusBar,
+    File,
+    Transfer,
+    Camera,
+    FilePath,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
