@@ -34,15 +34,22 @@ export class LieuDetailPage {
 
   	logged = false;
   	user={};
+  	date_lastImage:any;
+  	date_now:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public rezoom: RezoomProvider, private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController) {
   	this.id_lieu = this.navParams.get('id_lieu'); 
   }
 
   ionViewDidLoad() {
+  	var d = Date.now();
+	var date = new Date(d);
+	var month = date.getMonth()+1;
+
+	this.date_now = ""+date.getFullYear()+"-"+month+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+  
   	this.rezoom.getLieu(this.id_lieu).subscribe(datas => {
   		console.log(datas);
-  		alert(datas);
   		this.lieu = datas.lieu;
   		this.campagnes = datas.campagnes;
   	});
@@ -65,22 +72,22 @@ export class LieuDetailPage {
 
   public presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Select Image Source',
+      title: "Choisir l'image source",
       buttons: [
         {
-          text: 'Load from Library',
+          text: "Charger depuis l'album",
           handler: () => {
             this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
           }
         },
         {
-          text: 'Use Camera',
+          text: 'Utiliser la caméra',
           handler: () => {
             this.takePicture(this.camera.PictureSourceType.CAMERA);
           }
         },
         {
-          text: 'Cancel',
+          text: 'Annuler',
           role: 'cancel'
         }
       ]
@@ -103,6 +110,11 @@ export class LieuDetailPage {
 	    if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
 	      this.filePath.resolveNativePath(imagePath)
 	        .then(filePath => {
+	        	var d = Date.now();
+	        	var date = new Date(d);
+	        	var month = date.getMonth()+1;
+
+	        	this.date_lastImage = ""+date.getFullYear()+"-"+month+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
 	          let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
 	          let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
 	          this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
@@ -150,6 +162,42 @@ export class LieuDetailPage {
 	  } else {
 	    return cordova.file.dataDirectory + img;
 	  }
+	}
+
+	public uploadImage() {
+	  // Destination URL
+	  var url = "http://www.rezoom.sopromer.com/mobile/photo";
+	 
+	  // File for Upload
+	  var targetPath = this.pathForImage(this.lastImage);
+	  alert("UPLOADING")
+	 alert(targetPath);
+	  // File name only
+	  var filename = this.lastImage;
+	 
+	  var options = {
+	    fileKey: "file",
+	    fileName: filename,
+	    chunkedMode: false,
+	    mimeType: "multipart/form-data",
+	    params : {'fileName': filename}
+	  };
+	 
+	  const fileTransfer: TransferObject = this.transfer.create();
+	 
+	  this.loading = this.loadingCtrl.create({
+	    content: 'Uploading...',
+	  });
+	  this.loading.present();
+	 
+	  // Use the FileTransfer to upload the image
+	  fileTransfer.upload(targetPath, url, options).then(data => {
+	    this.loading.dismissAll()
+	    this.presentToast('Image succesful uploaded.');
+	  }, err => {
+	    this.loading.dismissAll()
+	    this.presentToast('Error while uploading file.');
+	  });
 	}
 
 }

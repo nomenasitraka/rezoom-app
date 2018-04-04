@@ -21,7 +21,7 @@
 	 	<div class="hr"> </div>
 	 	<div>
 	 		<p><span class="bold">NOUS SOMME EN SEMAINE :</span>  5</p>
-	 		<p><span class="bold">IL EST :</span>  07/02/2013 - 10h20</p>
+	 		<p><span class="bold">IL EST :</span>  {{ date_now }}</p>
 	 	
 	 	</div>
 
@@ -30,14 +30,14 @@
 	 		<p class="bold">CETTE SEMAINE, VOUS DEVRIEZ TROUVER SUR CE PRESENTOIRE : </p>
 	 		<ul>
 	 			<li *ngFor="let campagne of campagnes">
-	 				{{ campagne.nom_campagne }}
+	 				{{ campagne.nom_campagne }} <span *ngIf="logged">: {{ campagne.nb_casier }} / {{ campagne.repartition }}</span>
 	 			</li>
 	 		</ul>
 	 		
 	 	</div>
 	 	 <div class="hr"> </div>
 
-	 	<div>
+	 	<div *ngIf="!logged">
 	 		<button ion-button block >
             
               DECOUVREZ REZOOM
@@ -48,6 +48,25 @@
               NOUS CONTACTER
       		</button>
 	 	</div>
+
+	 	<div *ngIf="logged">
+	 		<p text-center>DEPOSEZ LES DOCUMENTS SUR LE PRESENTOIR PUIS</p>
+	 		<button ion-button block icon-left (click)="presentActionSheet()">
+	 			<ion-icon name="camera"></ion-icon>
+            	PRENEZ PHOTO
+      		</button>	
+
+      			<p text-center>ENSUITE</p>
+
+      		<button [disabled]="lastImage === null" ion-button block icon-left (click)="uploadImage()">
+	 			<ion-icon name="camera"></ion-icon>
+            	ENVOYEZ
+      		</button>
+
+
+	 	</div>
+
+
 
 	 	<div class="hr"> </div>
 
@@ -80,7 +99,7 @@
 </ion-content>
 
 
-
+<!-- 
 <ion-footer *ngIf="logged">
   <ion-toolbar color="primary">
     <ion-buttons>
@@ -92,4 +111,4 @@
       </button>
     </ion-buttons>
   </ion-toolbar>
-</ion-footer>
+</ion-footer> -->

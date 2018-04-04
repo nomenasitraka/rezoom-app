@@ -22,7 +22,6 @@ import { RezoomProvider } from '../providers/rezoom/rezoom';
 import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
-import { Camera } from '@ionic-native/camera';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
