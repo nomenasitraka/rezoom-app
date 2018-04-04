@@ -1,0 +1,67 @@
+<!--
+  Generated template for the LieuDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>REZOOM</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	 	<div>
+	 		<p class="bold">CE FLASH CODE CORRESPOND AU LIEU SUIVANT : </p>
+	 		<p>{{ lieu.nom_lieux }}</p>
+	 	</div >
+	 	<div class="hr"> </div>
+	 	<div>
+	 		<p><span class="bold">NOUS SOMME EN SEMAINE :</span>  5</p>
+	 		<p><span class="bold">IL EST :</span>  07/02/2013 - 10h20</p>
+	 	
+	 	</div>
+
+	 	<div class="hr"> </div>
+	 	<div>
+	 		<p class="bold">CETTE SEMAINE, VOUS DEVRIEZ TROUVER SUR CE PRESENTOIRE : </p>
+	 		<ul>
+	 			<li *ngFor="let campagne of campagnes">
+	 				{{ campagne.nom_campagne }}
+	 			</li>
+	 		</ul>
+	 		
+	 	</div>
+	 	 <div class="hr"> </div>
+
+	 	<div>
+	 		<button ion-button block >
+            
+              DECOUVREZ REZOOM
+      		</button>
+
+      		<button ion-button block >
+            
+              NOUS CONTACTER
+      		</button>
+	 	</div>
+
+	 	<div class="hr"> </div>
+
+	 	<p text-center>ESPACE PRO</p>
+	 		<form padding>
+		      <ion-item>
+		        <ion-label class="label">IDENTIFIANT</ion-label>
+		        <ion-input type="text" name="title" placeholder="Identifiant"></ion-input>
+		      </ion-item>
+		      <ion-item>
+		        <ion-label class="label">MOT DE PASSE</ion-label>
+		        <ion-input type="password" name="description" placeholder="Mot de passe"></ion-input>
+		      </ion-item>
+		      <button ion-button type="submit" block>IDENTIFICATION</button>
+		    </form>
+	 
+</ion-content>

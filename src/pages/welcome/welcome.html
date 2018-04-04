@@ -1,20 +1,33 @@
-<ion-content scroll="false" style="background: none transparent;">
-  <div class="splash-bg"></div>
-  <div class="splash-info">
-    <div class="splash-logo"></div>
-    <div class="splash-intro">
-      BIENVENU DANS REZOOM!
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>REZOOM</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content scroll="false" *ngIf="!scanning" >
+  <!-- <div class="splash-bg"></div> -->
+ 
+    <div padding>
+      
+      <button ion-button icon-left block (click)="scan()">
+            <ion-icon name="camera"></ion-icon> <br>
+              SCAN QR CODE
+      </button>
+
+      <button ion-button icon-left block >
+            <ion-icon name="arrow-down"></ion-icon>
+              Synchroniser les données
+      </button>
     </div>
-  </div>
-  <div padding>
-    <button ion-button block (click)="scan()">SCAN QR CODE</button>
+      
+
+   
+    
     <!-- <button ion-button block (click)="login()" class="login">{{ 'LOGIN' | translate }}</button> -->
 
-    <ion-list>
 
-      <ion-item>Cancelled : {{ data.cancelled }}</ion-item>
-      <ion-item>Format : {{ data.format }}</ion-item>
-      <ion-item>Text : {{ data.text }}</ion-item>
-    </ion-list>
-  </div>
+
 </ion-content>

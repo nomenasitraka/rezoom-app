@@ -1,15 +1,15 @@
 webpackJsonp([0],{
 
-/***/ 343:
+/***/ 347:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WelcomePageModule", function() { return WelcomePageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(356);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(362);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -44,15 +44,13 @@ var WelcomePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 356:
+/***/ 362:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WelcomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__ = __webpack_require__(225);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_qr_scanner__ = __webpack_require__(226);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(118);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -64,8 +62,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
-
 /**
  * The Welcome Page is a splash page that quickly describes the app,
  * and then directs the user to create an account or log in.
@@ -73,52 +69,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * we recommend not using the Welcome page.
 */
 var WelcomePage = /** @class */ (function () {
-    function WelcomePage(navCtrl, barcodeScanner, qrScanner) {
+    function WelcomePage(navCtrl) {
         this.navCtrl = navCtrl;
-        this.barcodeScanner = barcodeScanner;
-        this.qrScanner = qrScanner;
-        this.data = {};
+        this.scanning = false;
     }
     WelcomePage.prototype.scan = function () {
-        var _this = this;
-        /*this.option = {
-            prompt: "Scannez votre QR Code"
-        }
-        this.barcodeScanner.scan(this.option).then(barcodeData => {
-             console.log('Barcode data', barcodeData);
-             this.data = barcodeData;
-            }).catch(err => {
-                alert(err);
-            });*/
-        this.qrScanner.prepare()
-            .then(function (status) {
-            alert("scanning. Status : " + status.authorized);
-            if (status.authorized) {
-                // camera permission was granted
-                // start scanning
-                var scanSub_1 = _this.qrScanner.scan().subscribe(function (text) {
-                    alert('Scanned something ' + text);
-                    _this.qrScanner.hide(); // hide camera preview
-                    scanSub_1.unsubscribe(); // stop scanning
-                });
-                _this.qrScanner.resumePreview();
-                // show camera preview
-                _this.qrScanner.show().then(function (data2) {
-                    alert("datashowing: " + data2.showing);
-                });
-                // wait for user to scan something, then the observable callback will be called
-            }
-            else if (status.denied) {
-                alert('Denied');
-                // camera permission was permanently denied
-                // you must use QRScanner.openSettings() method to guide the user to the settings page
-                // then they can grant the permission from there
-            }
-            else {
-                alert('else');
-                // permission was denied, but not permanently. You can ask for permission again at a later time.
-            }
-        }).catch(function (e) { return alert('Error is' + e); });
+        this.navCtrl.push('ScanPage');
     };
     WelcomePage.prototype.login = function () {
         this.navCtrl.push('LoginPage');
@@ -128,12 +84,11 @@ var WelcomePage = /** @class */ (function () {
     };
     WelcomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-welcome',template:/*ion-inline-start:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/'<ion-content scroll="false" style="background: none transparent;">\n  <div class="splash-bg"></div>\n  <div class="splash-info">\n    <div class="splash-logo"></div>\n    <div class="splash-intro">\n      BIENVENU DANS REZOOM!\n    </div>\n  </div>\n  <div padding>\n    <button ion-button block (click)="scan()">SCAN QR CODE</button>\n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n    <ion-list>\n\n      <ion-item>Cancelled : {{ data.cancelled }}</ion-item>\n      <ion-item>Format : {{ data.format }}</ion-item>\n      <ion-item>Text : {{ data.text }}</ion-item>\n    </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/
+            selector: 'page-welcome',template:/*ion-inline-start:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/'\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>REZOOM</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content scroll="false" *ngIf="!scanning" >\n  <!-- <div class="splash-bg"></div> -->\n \n    <div padding>\n      \n      <button ion-button icon-left block (click)="scan()">\n            <ion-icon name="camera"></ion-icon> <br>\n              SCAN QR CODE\n      </button>\n\n      <button ion-button icon-left block >\n            <ion-icon name="arrow-down"></ion-icon>\n              Synchroniser les données\n      </button>\n    </div>\n      \n\n   \n    \n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\sitraka\ionic_project\rezoom\src\pages\welcome\welcome.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_qr_scanner__["a" /* QRScanner */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_qr_scanner__["a" /* QRScanner */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]])
     ], WelcomePage);
     return WelcomePage;
-    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=welcome.js.map
