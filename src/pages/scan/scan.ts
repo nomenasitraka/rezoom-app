@@ -78,7 +78,7 @@ export class ScanPage {
           /*alert('else')*/
           // permission was denied, but not permanently. You can ask for permission again at a later time.
         }
-      }).catch((e: any) => {alert('Error :'+ e);  });
+      }).catch((e: any) => {alert('Error :'+ e); this.navCtrl.push('LieuDetailPage', {id_lieu: 420}); });
   }
 
 }

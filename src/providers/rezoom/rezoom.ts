@@ -23,10 +23,22 @@ export class RezoomProvider {
     console.log('Hello RezoomProvider Provider');
   }
 
-  getLieu(id): Observable<[]>{
+  getLieu(id){
   	const body = new HttpParams()
     .set('id_lieu', id);
   	return this.http.post(this.site_url+"/mobile/qr_lieu/",
+	    body.toString(),
+	    {
+	      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+	    }
+  	);
+  }
+
+  public login(identity, password){
+  	const body = new HttpParams()
+    .set('identity', identity)
+    .set('password', password);
+  	return this.http.post(this.site_url+"/mobile/login/",
 	    body.toString(),
 	    {
 	      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')

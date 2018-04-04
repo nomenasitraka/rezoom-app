@@ -4,10 +4,10 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<ion-header text-wrap>
 
-  <ion-navbar>
-    <ion-title>REZOOM</ion-title>
+  <ion-navbar text-wrap>
+    <ion-title text-wrap>REZOOM > {{ user.first_name }} {{ user.last_name }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -51,17 +51,45 @@
 
 	 	<div class="hr"> </div>
 
-	 	<p text-center>ESPACE PRO</p>
-	 		<form padding>
+	 	
+	 	<div *ngIf="!logged">
+	 		<p text-center>ESPACE PRO</p>
+	 		<form padding (ngSubmit)="login()">
 		      <ion-item>
 		        <ion-label class="label">IDENTIFIANT</ion-label>
-		        <ion-input type="text" name="title" placeholder="Identifiant"></ion-input>
+		        <ion-input [(ngModel)]="identity" type="text" name="title" placeholder="Identifiant"></ion-input>
 		      </ion-item>
 		      <ion-item>
 		        <ion-label class="label">MOT DE PASSE</ion-label>
-		        <ion-input type="password" name="description" placeholder="Mot de passe"></ion-input>
+		        <ion-input [(ngModel)]="password" type="password" name="description" placeholder="Mot de passe"></ion-input>
 		      </ion-item>
 		      <button ion-button type="submit" block>IDENTIFICATION</button>
 		    </form>
+
+		    <div class="hr"> </div>
+	 		
+	 	</div>
+	 	
+
+		<div *ngIf="logged">
+	 		
+	 		 <img src="{{pathForImage(lastImage)}}" style="width: 100%" [hidden]="lastImage === null">
+  			<h3 [hidden]="lastImage !== null" text-center>Choisissez des photos!</h3>
+		</div>
 	 
 </ion-content>
+
+
+
+<ion-footer *ngIf="logged">
+  <ion-toolbar color="primary">
+    <ion-buttons>
+      <button ion-button icon-left (click)="presentActionSheet()">
+        <ion-icon name="camera"></ion-icon>Select Image
+      </button>
+      <button ion-button icon-left (click)="uploadImage()" [disabled]="lastImage === null">
+        <ion-icon name="cloud-upload"></ion-icon>Upload
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
