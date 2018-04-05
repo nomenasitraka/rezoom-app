@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, Loading, LoadingController } from 'ionic-angular';
 
 import { User } from '../../providers/providers';
 import { MainPage } from '../pages';
+
+
+import { Storage } from '@ionic/storage';
+import { RezoomProvider } from '../../providers/rezoom/rezoom';
 
 @IonicPage()
 @Component({
@@ -15,9 +19,13 @@ export class LoginPage {
   // If you're using the username field with or without email, make
   // sure to add it to the type
   account: { email: string, password: string } = {
-    email: 'test@example.com',
-    password: 'test'
+    email: '',
+    password: ''
   };
+
+  user: any;
+  logged = false;
+  loading: Loading;
 
   // Our translated text strings
   private loginErrorString: string;
@@ -25,7 +33,11 @@ export class LoginPage {
   constructor(public navCtrl: NavController,
     public user: User,
     public toastCtrl: ToastController,
-    public translateService: TranslateService) {
+    public translateService: TranslateService,
+    public storage: Storage,
+    public rezoom: RezoomProvider,
+    public loadingCtrl: LoadingController
+    ) {
 
     this.translateService.get('LOGIN_ERROR').subscribe((value) => {
       this.loginErrorString = value;
@@ -34,7 +46,22 @@ export class LoginPage {
 
   // Attempt to login in through our User service
   doLogin() {
-    this.user.login(this.account).subscribe((resp) => {
+    this.loading = this.loadingCtrl.create({
+        content: 'Identification...',
+    });
+    this.loading.present();
+      
+      this.rezoom.login(this.account.identity, this.account.password).subscribe(datas =>{
+        this.loading.dismissAll();
+        console.log(datas);
+        if(datas.status == "ok"){
+          this.logged = true;
+          this.user = datas.user;
+        }else{
+          alert("Erreur d'authentification");
+        }
+      });
+    /*this.user.login(this.account).subscribe((resp) => {
       this.navCtrl.push(MainPage);
     }, (err) => {
       this.navCtrl.push(MainPage);
@@ -45,6 +72,6 @@ export class LoginPage {
         position: 'top'
       });
       toast.present();
-    });
+    });*/
   }
 }

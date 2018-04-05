@@ -14,7 +14,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class WelcomePage {
 
-	
+	logged= false;
   scanning = false;
 	
   constructor(public navCtrl: NavController) { }

@@ -25832,3 +25832,9 @@ page-welcome button.login {
 page-welcome button.login.activated {
   background-color: gainsboro;
 }
+
+page-welcome .hr {
+  border-bottom: 1px solid #ccc;
+  margin: 10px 0;
+  width: 100%;
+}

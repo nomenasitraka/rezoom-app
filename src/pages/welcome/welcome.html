@@ -21,6 +21,23 @@
             <ion-icon name="arrow-down"></ion-icon>
               Synchroniser les données
       </button>
+
+      <div class="hr"></div>
+
+      <button ion-button icon-left block >
+            <ion-icon name="arrow-down"></ion-icon>
+              Uploader les images
+      </button>
+
+      <button ion-button icon-left block *ngIf="!logged" (click)="login()">
+            <ion-icon name="arrow-down"></ion-icon>
+              Connexion
+      </button>
+
+      <button ion-button icon-left block *ngIf="logged"  >
+            <ion-icon name="arrow-down"></ion-icon>
+              Déconexion
+      </button>
     </div>
       
 
