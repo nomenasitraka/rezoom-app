@@ -7,6 +7,9 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
     "cordova-plugin-device": {
       "PACKAGE_NAME": "io.ionic.starter"
     },
@@ -25,6 +28,9 @@
     "cordova-plugin-ionic-webview": {
       "PACKAGE_NAME": "io.ionic.starter"
     },
+    "cordova-plugin-nativestorage": {
+      "PACKAGE_NAME": "io.ionic.starter"
+    },
     "cordova-plugin-qrscanner": {
       "PACKAGE_NAME": "io.ionic.starter"
     },
@@ -36,12 +42,6 @@
     },
     "phonegap-plugin-barcodescanner": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
-      "PACKAGE_NAME": "io.ionic.starter"
-    },
-    "cordova-plugin-nativestorage": {
-      "PACKAGE_NAME": "io.ionic.starter"
-    },
-    "cordova-plugin-camera": {
       "PACKAGE_NAME": "io.ionic.starter"
     }
   },
