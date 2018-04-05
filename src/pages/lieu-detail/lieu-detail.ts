@@ -104,7 +104,7 @@ export class LieuDetailPage {
   	alert(sourceType)
 	  // Create options for the Camera Dialog
 	  var options = {
-	    quality: 100,
+	    quality: 50,
 	    sourceType: sourceType,
 	    saveToPhotoAlbum: false,
 	    correctOrientation: true
@@ -114,8 +114,10 @@ export class LieuDetailPage {
 	  this.camera.getPicture(options).then((imagePath) => {
 	    // Special handling for Android library
 	    if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+	    	alert("sourcetype OK");
 	      this.filePath.resolveNativePath(imagePath)
 	        .then(filePath => {
+	        	alert("resolve native path OK");
 	        	var d = Date.now();
 	        	var date = new Date(d);
 	        	var month = date.getMonth()+1;

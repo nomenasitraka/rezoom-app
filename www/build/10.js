@@ -1,6 +1,6 @@
 webpackJsonp([10],{
 
-/***/ 336:
+/***/ 339:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LieuDetailPageModule", function() { return LieuDetailPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lieu_detail__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lieu_detail__ = __webpack_require__(354);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var LieuDetailPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 351:
+/***/ 354:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -154,7 +154,7 @@ var LieuDetailPage = /** @class */ (function () {
         alert(sourceType);
         // Create options for the Camera Dialog
         var options = {
-            quality: 100,
+            quality: 50,
             sourceType: sourceType,
             saveToPhotoAlbum: false,
             correctOrientation: true
@@ -163,8 +163,10 @@ var LieuDetailPage = /** @class */ (function () {
         this.camera.getPicture(options).then(function (imagePath) {
             // Special handling for Android library
             if (_this.platform.is('android') && sourceType === _this.camera.PictureSourceType.PHOTOLIBRARY) {
+                alert("sourcetype OK");
                 _this.filePath.resolveNativePath(imagePath)
                     .then(function (filePath) {
+                    alert("resolve native path OK");
                     var d = Date.now();
                     var date = new Date(d);
                     var month = date.getMonth() + 1;
