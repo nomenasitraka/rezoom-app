@@ -57,9 +57,14 @@ export class LieuDetailPage {
   }
 
   login(){
+
+  	this.loading = this.loadingCtrl.create({
+	    content: 'Identification...',
+	});
+	this.loading.present();
   	
   	this.rezoom.login(this.identity, this.password).subscribe(datas =>{
-
+  		this.loading.dismissAll();
   		console.log(datas);
   		if(datas.status == "ok"){
   			this.logged = true;
@@ -96,6 +101,7 @@ export class LieuDetailPage {
   }
 
   public takePicture(sourceType) {
+  	alert(sourceType)
 	  // Create options for the Camera Dialog
 	  var options = {
 	    quality: 100,
@@ -125,7 +131,7 @@ export class LieuDetailPage {
 	      this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
 	    }
 	  }, (err) => {
-	    this.presentToast('Error while selecting image.');
+	    this.presentToast('Error while selecting image.'+ err);
 	  });
 	}
 
@@ -183,7 +189,7 @@ export class LieuDetailPage {
 	    params : {'fileName': filename}
 	  };
 	 
-	  /*const fileTransfer: TransferObject = this.transfer.create();*/
+	  const fileTransfer: TransferObject = this.transfer.create();
 
 	   let reader = new FileReader();
 

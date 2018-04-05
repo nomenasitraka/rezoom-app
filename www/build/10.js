@@ -1,6 +1,6 @@
 webpackJsonp([10],{
 
-/***/ 337:
+/***/ 336:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LieuDetailPageModule", function() { return LieuDetailPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lieu_detail__ = __webpack_require__(352);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lieu_detail__ = __webpack_require__(351);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var LieuDetailPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 352:
+/***/ 351:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -108,7 +108,12 @@ var LieuDetailPage = /** @class */ (function () {
     };
     LieuDetailPage.prototype.login = function () {
         var _this = this;
+        this.loading = this.loadingCtrl.create({
+            content: 'Identification...',
+        });
+        this.loading.present();
         this.rezoom.login(this.identity, this.password).subscribe(function (datas) {
+            _this.loading.dismissAll();
             console.log(datas);
             if (datas.status == "ok") {
                 _this.logged = true;
@@ -146,6 +151,7 @@ var LieuDetailPage = /** @class */ (function () {
     };
     LieuDetailPage.prototype.takePicture = function (sourceType) {
         var _this = this;
+        alert(sourceType);
         // Create options for the Camera Dialog
         var options = {
             quality: 100,
@@ -174,7 +180,7 @@ var LieuDetailPage = /** @class */ (function () {
                 _this.copyFileToLocalDir(correctPath, currentName, _this.createFileName());
             }
         }, function (err) {
-            _this.presentToast('Error while selecting image.');
+            _this.presentToast('Error while selecting image.' + err);
         });
     };
     // Create a new name for the image
@@ -225,7 +231,7 @@ var LieuDetailPage = /** @class */ (function () {
             mimeType: "multipart/form-data",
             params: { 'fileName': filename }
         };
-        /*const fileTransfer: TransferObject = this.transfer.create();*/
+        var fileTransfer = this.transfer.create();
         var reader = new FileReader();
         reader.readAsDataURL(filename);
         this.loading = this.loadingCtrl.create({
@@ -238,12 +244,12 @@ var LieuDetailPage = /** @class */ (function () {
             _this.presentToast('Image succesful uploaded.');
         }, function (err) {
             _this.loading.dismissAll();
-            _this.presentToast('Error while uploading file.');
+            _this.presentToast('Error while uploading file. : ' + err);
         });
     };
     LieuDetailPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-lieu-detail',template:/*ion-inline-start:"C:\Users\sitraka\ionic_project\rezoom\src\pages\lieu-detail\lieu-detail.html"*/'<!--\n  Generated template for the LieuDetailPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header text-wrap>\n\n  <ion-navbar text-wrap>\n    <ion-title text-wrap>REZOOM > {{ user.first_name }} {{ user.last_name }}</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n	 	<div>\n	 		<p class="bold">CE FLASH CODE CORRESPOND AU LIEU SUIVANT : </p>\n	 		<p>{{ lieu.nom_lieux }}</p>\n	 	</div >\n	 	<div class="hr"> </div>\n	 	<div>\n	 		<p><span class="bold">NOUS SOMME EN SEMAINE :</span>  5</p>\n	 		<p><span class="bold">IL EST :</span>  {{ date_now }}</p>\n	 	\n	 	</div>\n\n	 	<div class="hr"> </div>\n	 	<div>\n	 		<p class="bold">CETTE SEMAINE, VOUS DEVRIEZ TROUVER SUR CE PRESENTOIRE : </p>\n	 		<ul>\n	 			<li *ngFor="let campagne of campagnes">\n	 				{{ campagne.nom_campagne }} <span *ngIf="logged">: {{ campagne.nb_casier }} / {{ campagne.repartition }}</span>\n	 			</li>\n	 		</ul>\n	 		\n	 	</div>\n	 	 <div class="hr"> </div>\n\n	 	<div *ngIf="!logged">\n	 		<button ion-button block >\n            \n              DECOUVREZ REZOOM\n      		</button>\n\n      		<button ion-button block >\n            \n              NOUS CONTACTER\n      		</button>\n	 	</div>\n\n	 	<div *ngIf="logged">\n	 		<p text-center>DEPOSEZ LES DOCUMENTS SUR LE PRESENTOIR PUIS</p>\n	 		<button ion-button block icon-left (click)="presentActionSheet()">\n	 			<ion-icon name="camera"></ion-icon>\n            	PRENEZ PHOTO\n      		</button>	\n\n      			<p text-center>ENSUITE</p>\n\n      		<button [disabled]="lastImage === null" ion-button block icon-left (click)="uploadImage()">\n	 			<ion-icon name="camera"></ion-icon>\n            	ENVOYEZ\n      		</button>\n\n\n	 	</div>\n\n\n\n	 	<div class="hr"> </div>\n\n	 	\n	 	<div *ngIf="!logged">\n	 		<p text-center>ESPACE PRO</p>\n	 		<form padding (ngSubmit)="login()">\n		      <ion-item>\n		        <ion-label class="label">IDENTIFIANT</ion-label>\n		        <ion-input [(ngModel)]="identity" type="text" name="title" placeholder="Identifiant"></ion-input>\n		      </ion-item>\n		      <ion-item>\n		        <ion-label class="label">MOT DE PASSE</ion-label>\n		        <ion-input [(ngModel)]="password" type="password" name="description" placeholder="Mot de passe"></ion-input>\n		      </ion-item>\n		      <button ion-button type="submit" block>IDENTIFICATION</button>\n		    </form>\n\n		    <div class="hr"> </div>\n	 		\n	 	</div>\n	 	\n\n		<div *ngIf="logged">\n	 		\n	 		 <img src="{{pathForImage(lastImage)}}" style="width: 100%" [hidden]="lastImage === null">\n  			<h3 [hidden]="lastImage !== null" text-center>Choisissez des photos!</h3>\n		</div>\n	 \n</ion-content>\n\n\n<!-- \n<ion-footer *ngIf="logged">\n  <ion-toolbar color="primary">\n    <ion-buttons>\n      <button ion-button icon-left (click)="presentActionSheet()">\n        <ion-icon name="camera"></ion-icon>Select Image\n      </button>\n      <button ion-button icon-left (click)="uploadImage()" [disabled]="lastImage === null">\n        <ion-icon name="cloud-upload"></ion-icon>Upload\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-footer> -->\n'/*ion-inline-end:"C:\Users\sitraka\ionic_project\rezoom\src\pages\lieu-detail\lieu-detail.html"*/,
+            selector: 'page-lieu-detail',template:/*ion-inline-start:"C:\Users\sitraka\ionic_project\rezoom\src\pages\lieu-detail\lieu-detail.html"*/'<!--\n  Generated template for the LieuDetailPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header text-wrap>\n\n  <ion-navbar text-wrap>\n    <ion-title text-wrap>REZOOM > {{ user.first_name }} {{ user.last_name }}</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n	 	<div>\n	 		<p class="bold">CE FLASH CODE CORRESPOND AU LIEU SUIVANT : </p>\n	 		<p>{{ lieu.nom_lieux }}</p>\n	 	</div >\n	 	<div class="hr"> </div>\n	 	<div>\n	 		<p><span class="bold">NOUS SOMME EN SEMAINE :</span>  5</p>\n	 		<p><span class="bold">IL EST :</span>  {{ date_now }}</p>\n	 	\n	 	</div>\n\n	 	<div class="hr"> </div>\n	 	<div>\n	 		<p class="bold">CETTE SEMAINE, VOUS DEVRIEZ TROUVER SUR CE PRESENTOIRE : </p>\n	 		<ul>\n	 			<li *ngFor="let campagne of campagnes">\n	 				{{ campagne.nom_campagne }} <span *ngIf="logged">: {{ campagne.nb_casier }} CASIER(S) / {{ campagne.repartition }}</span>\n	 			</li>\n	 		</ul>\n	 		\n	 	</div>\n	 	 <div class="hr"> </div>\n\n	 	<div *ngIf="!logged">\n	 		<button ion-button block >\n            \n              DECOUVREZ REZOOM\n      		</button>\n\n      		<button ion-button block >\n            \n              NOUS CONTACTER\n      		</button>\n	 	</div>\n\n	 	<div *ngIf="logged">\n	 		<p text-center>DEPOSEZ LES DOCUMENTS SUR LE PRESENTOIR PUIS</p>\n	 		<button ion-button block icon-left (click)="presentActionSheet()">\n	 			<ion-icon name="camera"></ion-icon>\n            	PRENEZ PHOTO\n      		</button>	\n\n      			<p text-center>ENSUITE</p>\n\n      		<button [disabled]="lastImage === null" ion-button block icon-left (click)="uploadImage()">\n	 			<ion-icon name="camera"></ion-icon>\n            	ENVOYEZ\n      		</button>\n\n\n	 	</div>\n\n\n\n	 	<div class="hr"> </div>\n\n	 	\n	 	<div *ngIf="!logged">\n	 		<p text-center>ESPACE PRO</p>\n	 		<form padding (ngSubmit)="login()">\n		      <ion-item>\n		        <ion-label class="label">IDENTIFIANT</ion-label>\n		        <ion-input [(ngModel)]="identity" type="text" name="title" placeholder="Identifiant"></ion-input>\n		      </ion-item>\n		      <ion-item>\n		        <ion-label class="label">MOT DE PASSE</ion-label>\n		        <ion-input [(ngModel)]="password" type="password" name="description" placeholder="Mot de passe"></ion-input>\n		      </ion-item>\n		      <button ion-button type="submit" block>IDENTIFICATION</button>\n		    </form>\n\n		    <div class="hr"> </div>\n	 		\n	 	</div>\n	 	\n\n		<div *ngIf="logged">\n	 		\n	 		 <img src="{{pathForImage(lastImage)}}" style="width: 100%" [hidden]="lastImage === null">\n  			<h3 [hidden]="lastImage !== null" text-center>Choisissez des photos!</h3>\n		</div>\n	 \n</ion-content>\n\n\n<!-- \n<ion-footer *ngIf="logged">\n  <ion-toolbar color="primary">\n    <ion-buttons>\n      <button ion-button icon-left (click)="presentActionSheet()">\n        <ion-icon name="camera"></ion-icon>Select Image\n      </button>\n      <button ion-button icon-left (click)="uploadImage()" [disabled]="lastImage === null">\n        <ion-icon name="cloud-upload"></ion-icon>Upload\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-footer> -->\n'/*ion-inline-end:"C:\Users\sitraka\ionic_project\rezoom\src\pages\lieu-detail\lieu-detail.html"*/,
         }),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rezoom_rezoom__["a" /* RezoomProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rezoom_rezoom__["a" /* RezoomProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__["a" /* Camera */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__["a" /* Camera */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_transfer__["a" /* Transfer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_transfer__["a" /* Transfer */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_file__["a" /* File */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_file__["a" /* File */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__["a" /* FilePath */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__["a" /* FilePath */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _l || Object])
     ], LieuDetailPage);

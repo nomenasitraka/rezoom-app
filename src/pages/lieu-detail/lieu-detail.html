@@ -30,7 +30,7 @@
 	 		<p class="bold">CETTE SEMAINE, VOUS DEVRIEZ TROUVER SUR CE PRESENTOIRE : </p>
 	 		<ul>
 	 			<li *ngFor="let campagne of campagnes">
-	 				{{ campagne.nom_campagne }} <span *ngIf="logged">: {{ campagne.nb_casier }} / {{ campagne.repartition }}</span>
+	 				{{ campagne.nom_campagne }} <span *ngIf="logged">: {{ campagne.nb_casier }} CASIER(S) / {{ campagne.repartition }}</span>
 	 			</li>
 	 		</ul>
 	 		
