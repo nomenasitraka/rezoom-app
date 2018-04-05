@@ -22,7 +22,7 @@ webpackEmptyAsyncContext.id = 131;
 
 var map = {
 	"../pages/cards/cards.module": [
-		337,
+		339,
 		14
 	],
 	"../pages/content/content.module": [
@@ -30,15 +30,15 @@ var map = {
 		13
 	],
 	"../pages/item-create/item-create.module": [
-		338,
+		340,
 		12
 	],
 	"../pages/item-detail/item-detail.module": [
-		342,
+		337,
 		11
 	],
 	"../pages/lieu-detail/lieu-detail.module": [
-		339,
+		338,
 		10
 	],
 	"../pages/list-master/list-master.module": [
@@ -46,39 +46,39 @@ var map = {
 		9
 	],
 	"../pages/login/login.module": [
-		340,
+		342,
 		8
 	],
 	"../pages/menu/menu.module": [
-		344,
+		343,
 		7
 	],
 	"../pages/scan/scan.module": [
-		345,
+		344,
 		6
 	],
 	"../pages/search/search.module": [
-		343,
+		345,
 		5
 	],
 	"../pages/settings/settings.module": [
-		350,
+		346,
 		4
 	],
 	"../pages/signup/signup.module": [
-		348,
+		347,
 		3
 	],
 	"../pages/tabs/tabs.module": [
-		349,
+		348,
 		2
 	],
 	"../pages/tutorial/tutorial.module": [
-		346,
+		349,
 		1
 	],
 	"../pages/welcome/welcome.module": [
-		347,
+		350,
 		0
 	]
 };
@@ -454,20 +454,20 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_9_ionic_angular__["e" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_12__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/content/content.module#ContentPageModule', name: 'ContentPage', segment: 'content', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/item-detail/item-detail.module#ItemDetailPageModule', name: 'ItemDetailPage', segment: 'item-detail', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/lieu-detail/lieu-detail.module#LieuDetailPageModule', name: 'LieuDetailPage', segment: 'lieu-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/cards/cards.module#CardsPageModule', name: 'CardsPage', segment: 'cards', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/item-create/item-create.module#ItemCreatePageModule', name: 'ItemCreatePage', segment: 'item-create', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/lieu-detail/lieu-detail.module#LieuDetailPageModule', name: 'LieuDetailPage', segment: 'lieu-detail', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/list-master/list-master.module#ListMasterPageModule', name: 'ListMasterPage', segment: 'list-master', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/item-detail/item-detail.module#ItemDetailPageModule', name: 'ItemDetailPage', segment: 'item-detail', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/search/search.module#SearchPageModule', name: 'SearchPage', segment: 'search', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/menu/menu.module#MenuPageModule', name: 'MenuPage', segment: 'menu', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/scan/scan.module#ScanPageModule', name: 'ScanPage', segment: 'scan', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/tutorial/tutorial.module#TutorialPageModule', name: 'TutorialPage', segment: 'tutorial', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/welcome/welcome.module#WelcomePageModule', name: 'WelcomePage', segment: 'welcome', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/search/search.module#SearchPageModule', name: 'SearchPage', segment: 'search', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/settings/settings.module#SettingsPageModule', name: 'SettingsPage', segment: 'settings', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/tabs/tabs.module#TabsPageModule', name: 'TabsPage', segment: 'tabs', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/settings/settings.module#SettingsPageModule', name: 'SettingsPage', segment: 'settings', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/tutorial/tutorial.module#TutorialPageModule', name: 'TutorialPage', segment: 'tutorial', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/welcome/welcome.module#WelcomePageModule', name: 'WelcomePage', segment: 'welcome', priority: 'low', defaultHistory: [] }
                     ]
                 }),
                 __WEBPACK_IMPORTED_MODULE_6__ionic_storage__["a" /* IonicStorageModule */].forRoot()
