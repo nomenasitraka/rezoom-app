@@ -150,40 +150,48 @@ var LieuDetailPage = /** @class */ (function () {
         actionSheet.present();
     };
     LieuDetailPage.prototype.takePicture = function (sourceType) {
-        var _this = this;
         alert(sourceType);
         // Create options for the Camera Dialog
         var options = {
-            quality: 50,
-            sourceType: sourceType,
-            saveToPhotoAlbum: false,
-            correctOrientation: true
+            quality: 100,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE
         };
         // Get the data of an image
-        this.camera.getPicture(options).then(function (imagePath) {
-            // Special handling for Android library
-            if (_this.platform.is('android') && sourceType === _this.camera.PictureSourceType.PHOTOLIBRARY) {
-                alert("sourcetype OK");
-                _this.filePath.resolveNativePath(imagePath)
-                    .then(function (filePath) {
-                    alert("resolve native path OK");
-                    var d = Date.now();
-                    var date = new Date(d);
-                    var month = date.getMonth() + 1;
-                    _this.date_lastImage = "" + date.getFullYear() + "-" + month + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-                    var correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-                    var currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-                    _this.copyFileToLocalDir(correctPath, currentName, _this.createFileName());
-                });
-            }
-            else {
-                var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-                var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-                _this.copyFileToLocalDir(correctPath, currentName, _this.createFileName());
-            }
+        this.camera.getPicture(options).then(function (imageData) {
+            // imageData is either a base64 encoded string or a file URI
+            // If it's base64:
+            var base64Image = 'data:image/jpeg;base64,' + imageData;
         }, function (err) {
-            _this.presentToast('Error while selecting image.' + err);
+            // Handle error
+            alert("error when taking photos : " + err);
         });
+        /*this.camera.getPicture(options).then((imagePath) => {
+          // Special handling for Android library
+          alert("taking pics");
+          if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+              alert("sourcetype OK");
+            this.filePath.resolveNativePath(imagePath)
+              .then(filePath => {
+                  alert("resolve native path OK");
+                  var d = Date.now();
+                  var date = new Date(d);
+                  var month = date.getMonth()+1;
+  
+                  this.date_lastImage = ""+date.getFullYear()+"-"+month+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+                let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+                this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+              });
+          } else {
+            var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+            var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+          }
+        }, (err) => {
+          this.presentToast('Error while selecting image.'+ err);
+        });*/
     };
     // Create a new name for the image
     LieuDetailPage.prototype.createFileName = function () {

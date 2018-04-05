@@ -103,16 +103,25 @@ export class LieuDetailPage {
   public takePicture(sourceType) {
   	alert(sourceType)
 	  // Create options for the Camera Dialog
-	  var options = {
-	    quality: 50,
-	    sourceType: sourceType,
-	    saveToPhotoAlbum: false,
-	    correctOrientation: true
-	  };
+	  const options: CameraOptions = {
+		  quality: 100,
+		  destinationType: this.camera.DestinationType.DATA_URL,
+		  encodingType: this.camera.EncodingType.JPEG,
+		  mediaType: this.camera.MediaType.PICTURE
+		}
 	 
 	  // Get the data of an image
-	  this.camera.getPicture(options).then((imagePath) => {
+	  this.camera.getPicture(options).then((imageData) => {
+		 // imageData is either a base64 encoded string or a file URI
+		 // If it's base64:
+		 let base64Image = 'data:image/jpeg;base64,' + imageData;
+		}, (err) => {
+		 // Handle error
+		 alert("error when taking photos : "+err);
+		});
+	  /*this.camera.getPicture(options).then((imagePath) => {
 	    // Special handling for Android library
+	    alert("taking pics");
 	    if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
 	    	alert("sourcetype OK");
 	      this.filePath.resolveNativePath(imagePath)
@@ -134,7 +143,7 @@ export class LieuDetailPage {
 	    }
 	  }, (err) => {
 	    this.presentToast('Error while selecting image.'+ err);
-	  });
+	  });*/
 	}
 
 	// Create a new name for the image
