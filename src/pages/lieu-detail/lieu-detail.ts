@@ -11,6 +11,7 @@ import { Camera } from '@ionic-native/camera';
 import { NativeStorage } from '@ionic-native/native-storage';
 
 import { EmailComposer } from '@ionic-native/email-composer';
+import { Network } from '@ionic-native/network';
 
 
 declare var cordova: any;
@@ -45,7 +46,8 @@ export class LieuDetailPage {
   	base64:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public rezoom: RezoomProvider, private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController, public nativeStorage: NativeStorage,
-  		private emailComposer: EmailComposer
+  		private emailComposer: EmailComposer,
+  		private network: Network
   	) {
   	this.id_lieu = this.navParams.get('id_lieu'); 
 
@@ -63,18 +65,50 @@ export class LieuDetailPage {
 	var month = date.getMonth()+1;
 
 	this.date_now = ""+date.getFullYear()+"-"+month+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-  
-  	this.rezoom.getLieu(this.id_lieu).subscribe(datas => {
-  		console.log(datas);
-  		this.lieu = datas.lieu;
-  		this.lieu_str = JSON.stringify(datas);
-  		this.campagnes = datas.campagnes;
+  	// watch network for a disconnect
+	let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+	  this.nativeStorage.getItem("lieux").then( lieux => {
+	  	let lieu = lieux.filter(function(elt){
+	  		return elt.id_lieux_rezoom === this.id_lieu;
+	  	})
+	  	this.lieu = lieu.lieu;
+	  	this.campagnes = lieu.campagnes
 
-  	});
+	  }, error => {
+	  	alert("Vos données locales ne sont pas à jour, veuillez les mettre à jour en vous connectant sur wifi.");
+	  	this.navCtrl.push("WelcomePage");
+	  })
+	});
+
+	// stop disconnect watch
+	disconnectSubscription.unsubscribe();
+
+	// watch network for a connection
+	let connectSubscription = this.network.onConnect().subscribe(() => {
+	  console.log('network connected!');
+	  // We just got a connection but we need to wait briefly
+	   // before we determine the connection type. Might need to wait.
+	  // prior to doing any api requests as well.
+	
+	    this.rezoom.getLieu(this.id_lieu).subscribe(datas => {
+	  		console.log(datas);
+	  		this.lieu = datas.lieu;
+	  		this.lieu_str = JSON.stringify(datas);
+	  		this.campagnes = datas.campagnes;
+
+	  	});
+
+	});
+
+	// stop connect watch
+	connectSubscription.unsubscribe();
+
+
+  	
     console.log('ionViewDidLoad LieuDetailPage');
   }
 
-  login(){
+  public login(){
 
   	this.loading = this.loadingCtrl.create({
 	    content: 'Identification...',
@@ -94,7 +128,7 @@ export class LieuDetailPage {
   	});
   }
 
-  signaler(){
+  public signaler(){
   	
 
 	this.emailComposer.requestPermission().then(permission => {

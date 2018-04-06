@@ -1,6 +1,6 @@
 webpackJsonp([11],{
 
-/***/ 342:
+/***/ 344:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LieuDetailPageModule", function() { return LieuDetailPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lieu_detail__ = __webpack_require__(358);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lieu_detail__ = __webpack_require__(360);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var LieuDetailPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 358:
+/***/ 360:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46,12 +46,13 @@ var LieuDetailPageModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_rezoom_rezoom__ = __webpack_require__(223);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_file__ = __webpack_require__(227);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_transfer__ = __webpack_require__(228);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__ = __webpack_require__(229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_file__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_transfer__ = __webpack_require__(229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__ = __webpack_require__(230);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_native_storage__ = __webpack_require__(224);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_email_composer__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_email_composer__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_network__ = __webpack_require__(227);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -71,6 +72,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 /**
  * Generated class for the LieuDetailPage page.
  *
@@ -78,7 +80,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Ionic pages and navigation.
  */
 var LieuDetailPage = /** @class */ (function () {
-    function LieuDetailPage(navCtrl, navParams, rezoom, camera, transfer, file, filePath, actionSheetCtrl, toastCtrl, platform, loadingCtrl, nativeStorage, emailComposer) {
+    function LieuDetailPage(navCtrl, navParams, rezoom, camera, transfer, file, filePath, actionSheetCtrl, toastCtrl, platform, loadingCtrl, nativeStorage, emailComposer, network) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
@@ -93,6 +95,7 @@ var LieuDetailPage = /** @class */ (function () {
         this.loadingCtrl = loadingCtrl;
         this.nativeStorage = nativeStorage;
         this.emailComposer = emailComposer;
+        this.network = network;
         this.lieu = {};
         this.campagnes = [];
         this.lastImage = null;
@@ -111,12 +114,36 @@ var LieuDetailPage = /** @class */ (function () {
         var date = new Date(d);
         var month = date.getMonth() + 1;
         this.date_now = "" + date.getFullYear() + "-" + month + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-        this.rezoom.getLieu(this.id_lieu).subscribe(function (datas) {
-            console.log(datas);
-            _this.lieu = datas.lieu;
-            _this.lieu_str = JSON.stringify(datas);
-            _this.campagnes = datas.campagnes;
+        // watch network for a disconnect
+        var disconnectSubscription = this.network.onDisconnect().subscribe(function () {
+            _this.nativeStorage.getItem("lieux").then(function (lieux) {
+                var lieu = lieux.filter(function (elt) {
+                    return elt.id_lieux_rezoom === this.id_lieu;
+                });
+                _this.lieu = lieu.lieu;
+                _this.campagnes = lieu.campagnes;
+            }, function (error) {
+                alert("Vos données locales ne sont pas à jour, veuillez les mettre à jour en vous connectant sur wifi.");
+                _this.navCtrl.push("WelcomePage");
+            });
         });
+        // stop disconnect watch
+        disconnectSubscription.unsubscribe();
+        // watch network for a connection
+        var connectSubscription = this.network.onConnect().subscribe(function () {
+            console.log('network connected!');
+            // We just got a connection but we need to wait briefly
+            // before we determine the connection type. Might need to wait.
+            // prior to doing any api requests as well.
+            _this.rezoom.getLieu(_this.id_lieu).subscribe(function (datas) {
+                console.log(datas);
+                _this.lieu = datas.lieu;
+                _this.lieu_str = JSON.stringify(datas);
+                _this.campagnes = datas.campagnes;
+            });
+        });
+        // stop connect watch
+        connectSubscription.unsubscribe();
         console.log('ionViewDidLoad LieuDetailPage');
     };
     LieuDetailPage.prototype.login = function () {
@@ -311,10 +338,11 @@ var LieuDetailPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-lieu-detail',template:/*ion-inline-start:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\lieu-detail\lieu-detail.html"*/'<!--\n\n  Generated template for the LieuDetailPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header text-wrap>\n\n\n\n  <ion-navbar text-wrap>\n\n    <ion-title text-wrap>REZOOM > {{ user.first_name }} {{ user.last_name }}</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n		<p>{{ base64 }}</p>\n\n	 	<div>\n\n	 		<p class="bold">CE FLASH CODE CORRESPOND AU LIEU SUIVANT : </p>\n\n	 		<p>{{ lieu.nom_lieux }}</p>\n\n	 	</div >\n\n	 	<div class="hr"> </div>\n\n	 	<div>\n\n	 		<p><span class="bold">NOUS SOMME EN SEMAINE :</span>  5</p>\n\n	 		<p><span class="bold">IL EST :</span>  {{ date_now }}</p>\n\n	 	\n\n	 	</div>\n\n\n\n	 	<div class="hr"> </div>\n\n	 	<div>\n\n	 		<p class="bold">CETTE SEMAINE, VOUS DEVRIEZ TROUVER SUR CE PRESENTOIRE : </p>\n\n	 		<ul>\n\n	 			<li *ngFor="let campagne of campagnes">\n\n	 				{{ campagne.nom_campagne }} <span *ngIf="logged">: {{ campagne.nb_casier }} CASIER(S) / {{ campagne.repartition }}</span>\n\n	 			</li>\n\n	 		</ul>\n\n	 		\n\n	 	</div>\n\n	 	 <div class="hr"> </div>\n\n\n\n	 	<div *ngIf="!logged">\n\n	 		<button ion-button block >\n\n            \n\n              DECOUVREZ REZOOM\n\n      		</button>\n\n\n\n      		<button ion-button block >\n\n            \n\n              NOUS CONTACTER\n\n      		</button>\n\n	 	</div>\n\n\n\n	 	<div *ngIf="logged">\n\n	 		<p text-center>DEPOSEZ LES DOCUMENTS SUR LE PRESENTOIR PUIS</p>\n\n	 		<button ion-button block icon-left (click)="presentActionSheet()" [hidden]="lastImage !== null">\n\n	 			<ion-icon name="camera"></ion-icon>\n\n            	PRENEZ PHOTO\n\n      		</button>	\n\n\n\n      			<p text-center>ENSUITE</p>\n\n\n\n      		\n\n      		<button [disabled]="lastImage === null" ion-button block icon-left (click)="validateImage()">\n\n	 			<ion-icon name="camera"></ion-icon>\n\n            	VALIDER LA PHOTO\n\n      		</button>\n\n      		<br>\n\n      		<br>\n\n      		<p text-center [hidden]="lastImage !== null" >ENVOYEZ UN MAIL POUR SIGNALER UN PROBLEME SUR CE PRESENTOIRE</p>\n\n\n\n      		<button ion-button block [hidden]="lastImage !== null" (click)="signaler()">\n\n	 			\n\n            	SIGNALER\n\n      		</button>\n\n\n\n\n\n	 	</div>\n\n\n\n\n\n\n\n	 	<div class="hr"> </div>\n\n\n\n	 	\n\n	 	<div *ngIf="!logged">\n\n	 		<p text-center>ESPACE PRO</p>\n\n	 		<form padding (ngSubmit)="login()">\n\n		      <ion-item>\n\n		        <ion-label class="label">IDENTIFIANT</ion-label>\n\n		        <ion-input [(ngModel)]="identity" type="text" name="title" placeholder="Identifiant"></ion-input>\n\n		      </ion-item>\n\n		      <ion-item>\n\n		        <ion-label class="label">MOT DE PASSE</ion-label>\n\n		        <ion-input [(ngModel)]="password" type="password" name="description" placeholder="Mot de passe"></ion-input>\n\n		      </ion-item>\n\n		      <button ion-button type="submit" block>IDENTIFICATION</button>\n\n		    </form>\n\n\n\n		    <div class="hr"> </div>\n\n	 		\n\n	 	</div>\n\n	 	\n\n\n\n		<div *ngIf="logged">\n\n	 		\n\n	 		 <img src="{{pathForImage(lastImage)}}" style="width: 100%" [hidden]="lastImage === null">\n\n  			\n\n		</div>\n\n\n\n		<button [hidden]="lastImage === null" ion-button block icon-left (click)="cancel()">\n\n	 			\n\n            	ANNULER\n\n      	</button>\n\n	 \n\n</ion-content>\n\n\n\n\n\n<!-- \n\n<ion-footer *ngIf="logged">\n\n  <ion-toolbar color="primary">\n\n    <ion-buttons>\n\n      <button ion-button icon-left (click)="presentActionSheet()">\n\n        <ion-icon name="camera"></ion-icon>Select Image\n\n      </button>\n\n      <button ion-button icon-left (click)="uploadImage()" [disabled]="lastImage === null">\n\n        <ion-icon name="cloud-upload"></ion-icon>Upload\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-toolbar>\n\n</ion-footer> -->\n\n'/*ion-inline-end:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\lieu-detail\lieu-detail.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_rezoom_rezoom__["a" /* RezoomProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_rezoom_rezoom__["a" /* RezoomProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__["a" /* Camera */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__["a" /* Camera */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_transfer__["a" /* Transfer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_transfer__["a" /* Transfer */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_file__["a" /* File */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_file__["a" /* File */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__["a" /* FilePath */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__["a" /* FilePath */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_7__ionic_native_native_storage__["a" /* NativeStorage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__ionic_native_native_storage__["a" /* NativeStorage */]) === "function" && _m || Object, typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_8__ionic_native_email_composer__["a" /* EmailComposer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__ionic_native_email_composer__["a" /* EmailComposer */]) === "function" && _o || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_rezoom_rezoom__["a" /* RezoomProvider */], __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_transfer__["a" /* Transfer */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_file__["a" /* File */], __WEBPACK_IMPORTED_MODULE_5__ionic_native_file_path__["a" /* FilePath */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_7__ionic_native_native_storage__["a" /* NativeStorage */],
+            __WEBPACK_IMPORTED_MODULE_8__ionic_native_email_composer__["a" /* EmailComposer */],
+            __WEBPACK_IMPORTED_MODULE_9__ionic_native_network__["a" /* Network */]])
     ], LieuDetailPage);
     return LieuDetailPage;
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
 }());
 
 //# sourceMappingURL=lieu-detail.js.map

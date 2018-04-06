@@ -25,6 +25,7 @@ import { FilePath } from '@ionic-native/file-path';
 
 import { NativeStorage } from '@ionic-native/native-storage';
 import { EmailComposer } from '@ionic-native/email-composer';
+import { Network } from '@ionic-native/network';
 
 
 // The translate loader needs to know where to load i18n files
@@ -84,6 +85,7 @@ export function provideSettings(storage: Storage) {
     FilePath,
     NativeStorage,
     EmailComposer,
+    Network,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },

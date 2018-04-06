@@ -123,6 +123,10 @@ export class RezoomProvider {
      
   }
 
+  public importDatas(){
+    return [];
+  }
+
    public pathForImage(img) {
     if (img === null) {
       return '';

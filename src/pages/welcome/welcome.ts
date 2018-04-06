@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController,LoadingController, Loading } from 'ionic-angular';
 import { NativeStorage } from '@ionic-native/native-storage';
+import { Network } from '@ionic-native/network';
+
+import { RezoomProvider } from '../../providers/rezoom/rezoom';
+
+
 
 
 /**
@@ -19,8 +24,13 @@ export class WelcomePage {
 	logged= false;
   scanning = false;
   images: any;
+  loading: Loading;
 	
-  constructor(public navCtrl: NavController, public nativeStorage: NativeStorage) {
+  constructor(public navCtrl: NavController, public nativeStorage: NativeStorage,
+    public loadingCtrl: LoadingController,
+    private network: Network,
+    public rezoom: RezoomProvider
+    ) {
       this.nativeStorage.getItem("user").then(user =>{
         this.logged = true;
       }, error => {
@@ -54,6 +64,36 @@ export class WelcomePage {
   }
 
   clear(){
-    this.nativeStorage.remove("images");
+   this.navCtrl.push("ListMasterPage");
+  }
+
+  importDatas(){
+    this.loading = this.loadingCtrl.create({
+        content: 'Importation des données...',
+    });
+    this.loading.present();
+
+    // watch network for a connection
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      console.log('network connected!');
+      // We just got a connection but we need to wait briefly
+       // before we determine the connection type. Might need to wait.
+      // prior to doing any api requests as well.
+     
+       
+          this.rezoom.importDatas().then(datas => {
+              this.loading.dismissAll();
+              this.nativeStorage.setItem("lieux", datas).then(d => {
+                alert("Données importées avec succès!");
+              });
+
+            });
+       
+      
+    });
+
+    // stop connect watch
+    connectSubscription.unsubscribe();
+            
   }
 }
