@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
+import { NativeStorage } from '@ionic-native/native-storage';
+
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -14,10 +16,19 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class WelcomePage {
 
-	
+	logged= false;
   scanning = false;
+  images: any;
 	
-  constructor(public navCtrl: NavController) { }
+  constructor(public navCtrl: NavController, public nativeStorage: NativeStorage) {
+      this.nativeStorage.getItem("user").then(user =>{
+        this.logged = true;
+      }, error => {
+        this.logged = false;
+      })
+   }
+
+   
 
   scan(){
    this.navCtrl.push('ScanPage');
@@ -30,5 +41,19 @@ export class WelcomePage {
 
   signup() {
     this.navCtrl.push('SignupPage');
+  }
+
+  upload(){
+    this.navCtrl.push('UploadPage');
+  }
+
+  logout(){
+    this.nativeStorage.remove("user").then(data => {
+      this.logged = false;
+    });
+  }
+
+  clear(){
+    this.nativeStorage.remove("images");
   }
 }

@@ -14,6 +14,7 @@
 
 
 <ion-content padding>
+		<p>{{ base64 }}</p>
 	 	<div>
 	 		<p class="bold">CE FLASH CODE CORRESPOND AU LIEU SUIVANT : </p>
 	 		<p>{{ lieu.nom_lieux }}</p>
@@ -51,16 +52,25 @@
 
 	 	<div *ngIf="logged">
 	 		<p text-center>DEPOSEZ LES DOCUMENTS SUR LE PRESENTOIR PUIS</p>
-	 		<button ion-button block icon-left (click)="presentActionSheet()">
+	 		<button ion-button block icon-left (click)="presentActionSheet()" [hidden]="lastImage !== null">
 	 			<ion-icon name="camera"></ion-icon>
             	PRENEZ PHOTO
       		</button>	
 
       			<p text-center>ENSUITE</p>
 
-      		<button [disabled]="lastImage === null" ion-button block icon-left (click)="uploadImage()">
+      		
+      		<button [disabled]="lastImage === null" ion-button block icon-left (click)="validateImage()">
 	 			<ion-icon name="camera"></ion-icon>
-            	ENVOYEZ
+            	VALIDER LA PHOTO
+      		</button>
+      		<br>
+      		<br>
+      		<p text-center [hidden]="lastImage !== null" >ENVOYEZ UN MAIL POUR SIGNALER UN PROBLEME SUR CE PRESENTOIRE</p>
+
+      		<button ion-button block [hidden]="lastImage !== null" (click)="signaler()">
+	 			
+            	SIGNALER
       		</button>
 
 
@@ -93,8 +103,13 @@
 		<div *ngIf="logged">
 	 		
 	 		 <img src="{{pathForImage(lastImage)}}" style="width: 100%" [hidden]="lastImage === null">
-  			<h3 [hidden]="lastImage !== null" text-center>Choisissez des photos!</h3>
+  			
 		</div>
+
+		<button [hidden]="lastImage === null" ion-button block icon-left (click)="cancel()">
+	 			
+            	ANNULER
+      	</button>
 	 
 </ion-content>
 

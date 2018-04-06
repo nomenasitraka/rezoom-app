@@ -23,6 +23,10 @@ import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 
+import { NativeStorage } from '@ionic-native/native-storage';
+import { EmailComposer } from '@ionic-native/email-composer';
+
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -78,6 +82,8 @@ export function provideSettings(storage: Storage) {
     Transfer,
     Camera,
     FilePath,
+    NativeStorage,
+    EmailComposer,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },

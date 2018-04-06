@@ -8,6 +8,10 @@ import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 
 import { Camera } from '@ionic-native/camera';
+import { NativeStorage } from '@ionic-native/native-storage';
+
+import { EmailComposer } from '@ionic-native/email-composer';
+
 
 declare var cordova: any;
 /**
@@ -37,8 +41,20 @@ export class LieuDetailPage {
   	date_lastImage:any;
   	date_now:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public rezoom: RezoomProvider, private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController) {
+  	lieu_str:any;
+  	base64:any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public rezoom: RezoomProvider, private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController, public nativeStorage: NativeStorage,
+  		private emailComposer: EmailComposer
+  	) {
   	this.id_lieu = this.navParams.get('id_lieu'); 
+
+  	this.nativeStorage.getItem("user").then(data =>{
+  		this.user = data;
+  		this.logged = true;
+  	}, error => {
+
+  	})
   }
 
   ionViewDidLoad() {
@@ -51,7 +67,9 @@ export class LieuDetailPage {
   	this.rezoom.getLieu(this.id_lieu).subscribe(datas => {
   		console.log(datas);
   		this.lieu = datas.lieu;
+  		this.lieu_str = JSON.stringify(datas);
   		this.campagnes = datas.campagnes;
+
   	});
     console.log('ionViewDidLoad LieuDetailPage');
   }
@@ -69,14 +87,40 @@ export class LieuDetailPage {
   		if(datas.status == "ok"){
   			this.logged = true;
   			this.user = datas.user;
+  			this.nativeStorage.setItem("user", datas.user).then(data => {})
   		}else{
   			alert("Erreur d'authentification");
   		}
   	});
   }
 
+  signaler(){
+  	
+
+	this.emailComposer.requestPermission().then(permission => {
+	 		if(permission){
+	 			var d = new Date;
+				
+
+				let date_now= d.toString();
+				/*let date_now= ""+date.getDate()+"-"+month+"-"+date.getFullYear()+" / "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();*/
+		  
+			    let email = {
+				  to: 'contact@rezoom.re',
+				 
+			
+				  subject: ""+ date_now+ " / "+this.lieu.nom_lieux,
+				 
+				  isHtml: true
+				};
+				this.emailComposer.open(email);
+	 		}
+	 	})
+  }
+
   public presentActionSheet() {
-    let actionSheet = this.actionSheetCtrl.create({
+  	this.takePicture(this.camera.PictureSourceType.CAMERA);
+    /*let actionSheet = this.actionSheetCtrl.create({
       title: "Choisir l'image source",
       buttons: [
         {
@@ -96,15 +140,15 @@ export class LieuDetailPage {
           role: 'cancel'
         }
       ]
-    });
-    actionSheet.present();
+    });*/
+    /*actionSheet.present();*/
   }
 
   public takePicture(sourceType) {
-  	alert(sourceType)
+
 	  // Create options for the Camera Dialog
 	  var options = {
-	    quality: 100,
+	    quality: 20,
 	    sourceType: sourceType,
 	    saveToPhotoAlbum: false,
 	    correctOrientation: true
@@ -113,14 +157,17 @@ export class LieuDetailPage {
 	  // Get the data of an image
 	  this.camera.getPicture(options).then((imagePath) => {
 	    // Special handling for Android library
+	 
+	    var d = Date.now();
+	    var date = new Date(d);
+	    var month = date.getMonth()+1;
+	    this.date_lastImage = ""+date.getFullYear()+"-"+month+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
 	    if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
 	      this.filePath.resolveNativePath(imagePath)
 	        .then(filePath => {
-	        	var d = Date.now();
-	        	var date = new Date(d);
-	        	var month = date.getMonth()+1;
+	        	
 
-	        	this.date_lastImage = ""+date.getFullYear()+"-"+month+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+	        	
 	          let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
 	          let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
 	          this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
@@ -133,6 +180,52 @@ export class LieuDetailPage {
 	  }, (err) => {
 	    this.presentToast('Error while selecting image.'+ err);
 	  });
+	}
+
+	public validateImage(){
+		this.lastImage
+		this.nativeStorage.getItem('images')
+		  .then(
+		    data => {
+		    	let datas = data;
+		    	 this.file.readAsDataURL(cordova.file.dataDirectory, this.lastImage).then(file =>{
+		    	 	this
+		    		datas.push({base64: file, name: this.lastImage, date_upload: this.date_lastImage,campagnes: this.campagnes, id_lieu: this.id_lieu  , upload: false, });
+			    	this.nativeStorage.setItem("images", datas).then( data => {
+
+			    		alert("Image validé!");
+			    		this.navCtrl.push("WelcomePage");
+			    	}); 
+		    	}).catch(function (err: TypeError) {
+                  alert(err.message);
+              });
+		    	
+		    	
+		    	
+		    },
+		    error => {
+		    	this.file.readAsDataURL(cordova.file.dataDirectory, this.lastImage).then(file =>{
+		    		
+		    		this.nativeStorage.setItem('images', [{base64: file, name: this.lastImage, date_upload: this.date_lastImage,campagnes: this.campagnes, id_lieu: this.id_lieu  , upload: false, }] )
+					  .then(
+					    (data) =>{
+
+					    	alert("Image validé!");
+					    	this.navCtrl.push("WelcomePage");
+					    } ,
+					    error => console.error('Validating image : Error storing item', error)
+					  );
+		    	}).catch(function (err: TypeError) {
+                  alert(err.message);
+              });
+			    	
+		    }
+		  );
+		
+	}
+
+	public cancel(){
+		this.navCtrl.push("WelcomePage");
 	}
 
 	// Create a new name for the image

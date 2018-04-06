@@ -21,6 +21,29 @@
             <ion-icon name="arrow-down"></ion-icon>
               Synchroniser les données
       </button>
+
+      <div class="hr"></div>
+
+      <button ion-button icon-left block (click)="upload()">
+            <ion-icon name="arrow-down"></ion-icon>
+              Uploader les images
+      </button>
+
+      <button ion-button icon-left block *ngIf="!logged" (click)="login()">
+            <ion-icon name="arrow-down"></ion-icon>
+              Connexion
+      </button>
+
+      <button ion-button icon-left block *ngIf="logged" (click)="logout()" >
+            <ion-icon name="arrow-down"></ion-icon>
+              Déconexion
+      </button>
+
+    
+
+      <ul>
+        <li *ngFor="let image of images">{{ image.name }}</li>
+      </ul>
     </div>
       
 

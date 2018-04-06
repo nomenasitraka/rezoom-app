@@ -1,14 +1,15 @@
 webpackJsonp([6],{
 
-/***/ 344:
+/***/ 347:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScanPageModule", function() { return ScanPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SearchPageModule", function() { return SearchPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scan__ = __webpack_require__(359);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__search__ = __webpack_require__(363);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,35 +19,39 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ScanPageModule = /** @class */ (function () {
-    function ScanPageModule() {
+
+var SearchPageModule = /** @class */ (function () {
+    function SearchPageModule() {
     }
-    ScanPageModule = __decorate([
+    SearchPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__scan__["a" /* ScanPage */],
+                __WEBPACK_IMPORTED_MODULE_3__search__["a" /* SearchPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__scan__["a" /* ScanPage */]),
+                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__search__["a" /* SearchPage */]),
+                __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__["b" /* TranslateModule */].forChild()
             ],
+            exports: [
+                __WEBPACK_IMPORTED_MODULE_3__search__["a" /* SearchPage */]
+            ]
         })
-    ], ScanPageModule);
-    return ScanPageModule;
+    ], SearchPageModule);
+    return SearchPageModule;
 }());
 
-//# sourceMappingURL=scan.module.js.map
+//# sourceMappingURL=search.module.js.map
 
 /***/ }),
 
-/***/ 359:
+/***/ 363:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ScanPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SearchPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_qr_scanner__ = __webpack_require__(229);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_rezoom_rezoom__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_providers__ = __webpack_require__(43);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -59,78 +64,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-/**
- * Generated class for the ScanPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var ScanPage = /** @class */ (function () {
-    function ScanPage(navCtrl, navParams, qrScanner, rezoom) {
+var SearchPage = /** @class */ (function () {
+    function SearchPage(navCtrl, navParams, items) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.qrScanner = qrScanner;
-        this.rezoom = rezoom;
-        this.data = {};
+        this.items = items;
+        this.currentItems = [];
     }
-    ScanPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad ScanPage');
+    /**
+     * Perform a service for the proper items.
+     */
+    SearchPage.prototype.getItems = function (ev) {
+        var val = ev.target.value;
+        if (!val || !val.trim()) {
+            this.currentItems = [];
+            return;
+        }
+        this.currentItems = this.items.query({
+            name: val
+        });
     };
-    ScanPage.prototype.ionViewWillEnter = function () {
-        var _this = this;
-        this.qrScanner.prepare()
-            .then(function (status) {
-            if (status.authorized) {
-                // camera permission was granted
-                // start scanning
-                var scanSub_1 = _this.qrScanner.scan().subscribe(function (text) {
-                    /*alert('Scanned something '+ text);
-        */
-                    _this.qrScanner.hide(); // hide camera preview
-                    scanSub_1.unsubscribe(); // stop scanning
-                    try {
-                        _this.data = JSON.parse(text);
-                        if (typeof _this.data.id != undefined) {
-                            _this.navCtrl.push('LieuDetailPage', { id_lieu: _this.data.id });
-                        }
-                        else {
-                            alert("Error : " + _this.data);
-                        }
-                    }
-                    catch (e) {
-                        alert("QR Code non valide!");
-                    }
-                });
-                _this.qrScanner.resumePreview();
-                // show camera preview
-                _this.qrScanner.show().then(function (data2) {
-                    /*alert("datashowing: "+ data2.showing);*/
-                });
-                // wait for user to scan something, then the observable callback will be called
-            }
-            else if (status.denied) {
-                alert('Denied');
-                // camera permission was permanently denied
-                // you must use QRScanner.openSettings() method to guide the user to the settings page
-                // then they can grant the permission from there
-            }
-            else {
-                /*alert('else')*/
-                // permission was denied, but not permanently. You can ask for permission again at a later time.
-            }
-        }).catch(function (e) { alert('Error :' + e); _this.navCtrl.push('LieuDetailPage', { id_lieu: 616 }); });
+    /**
+     * Navigate to the detail page for this item.
+     */
+    SearchPage.prototype.openItem = function (item) {
+        this.navCtrl.push('ItemDetailPage', {
+            item: item
+        });
     };
-    ScanPage = __decorate([
+    SearchPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-scan',template:/*ion-inline-start:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\scan\scan.html"*/'<!--\n\n  Generated template for the ScanPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n  <ion-navbar>\n\n    <ion-title>REZOOM > Scan Qr Code</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding style="background: none transparent;">\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\scan\scan.html"*/,
+            selector: 'page-search',template:/*ion-inline-start:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\search\search.html"*/'<ion-header>\n\n\n\n  <ion-navbar>\n\n    <ion-title>{{ \'SEARCH_TITLE\' | translate }}</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content>\n\n  <ion-searchbar (ionInput)="getItems($event)" placeholder="{{ \'SEARCH_PLACEHOLDER\' | translate }}"></ion-searchbar>\n\n  <ion-list>\n\n    <button ion-item (click)="openItem(item)" *ngFor="let item of currentItems">\n\n      <ion-avatar item-start>\n\n        <img [src]="item.profilePic" />\n\n      </ion-avatar>\n\n      <h2>{{item.name}}</h2>\n\n      <p>{{item.about}}</p>\n\n      <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>\n\n    </button>\n\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\search\search.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_qr_scanner__["a" /* QRScanner */], __WEBPACK_IMPORTED_MODULE_3__providers_rezoom_rezoom__["a" /* RezoomProvider */]])
-    ], ScanPage);
-    return ScanPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_providers__["b" /* Items */]])
+    ], SearchPage);
+    return SearchPage;
 }());
 
-//# sourceMappingURL=scan.js.map
+//# sourceMappingURL=search.js.map
 
 /***/ })
 

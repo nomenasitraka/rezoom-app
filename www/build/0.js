@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 350:
+/***/ 353:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__ = __webpack_require__(119);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(365);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(369);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -44,13 +44,14 @@ var WelcomePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 365:
+/***/ 369:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WelcomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_native_storage__ = __webpack_require__(224);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -62,6 +63,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 /**
  * The Welcome Page is a splash page that quickly describes the app,
  * and then directs the user to create an account or log in.
@@ -69,9 +71,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * we recommend not using the Welcome page.
 */
 var WelcomePage = /** @class */ (function () {
-    function WelcomePage(navCtrl) {
+    function WelcomePage(navCtrl, nativeStorage) {
+        var _this = this;
         this.navCtrl = navCtrl;
+        this.nativeStorage = nativeStorage;
+        this.logged = false;
         this.scanning = false;
+        this.nativeStorage.getItem("user").then(function (user) {
+            _this.logged = true;
+        }, function (error) {
+            _this.logged = false;
+        });
     }
     WelcomePage.prototype.scan = function () {
         this.navCtrl.push('ScanPage');
@@ -82,11 +92,23 @@ var WelcomePage = /** @class */ (function () {
     WelcomePage.prototype.signup = function () {
         this.navCtrl.push('SignupPage');
     };
+    WelcomePage.prototype.upload = function () {
+        this.navCtrl.push('UploadPage');
+    };
+    WelcomePage.prototype.logout = function () {
+        var _this = this;
+        this.nativeStorage.remove("user").then(function (data) {
+            _this.logged = false;
+        });
+    };
+    WelcomePage.prototype.clear = function () {
+        this.nativeStorage.remove("images");
+    };
     WelcomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-welcome',template:/*ion-inline-start:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\welcome\welcome.html"*/'\n\n<ion-header>\n\n\n\n  <ion-navbar>\n\n    <ion-title>REZOOM</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n<ion-content scroll="false" *ngIf="!scanning" >\n\n  <!-- <div class="splash-bg"></div> -->\n\n \n\n    <div padding>\n\n      \n\n      <button ion-button icon-left block (click)="scan()">\n\n            <ion-icon name="camera"></ion-icon> <br>\n\n              SCAN QR CODE\n\n      </button>\n\n\n\n      <button ion-button icon-left block >\n\n            <ion-icon name="arrow-down"></ion-icon>\n\n              Synchroniser les données\n\n      </button>\n\n    </div>\n\n      \n\n\n\n   \n\n    \n\n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n\n\n\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\welcome\welcome.html"*/
+            selector: 'page-welcome',template:/*ion-inline-start:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\welcome\welcome.html"*/'\n\n<ion-header>\n\n\n\n  <ion-navbar>\n\n    <ion-title>REZOOM</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n<ion-content scroll="false" *ngIf="!scanning" >\n\n  <!-- <div class="splash-bg"></div> -->\n\n \n\n    <div padding>\n\n      \n\n      <button ion-button icon-left block (click)="scan()">\n\n            <ion-icon name="camera"></ion-icon> <br>\n\n              SCAN QR CODE\n\n      </button>\n\n\n\n      <button ion-button icon-left block >\n\n            <ion-icon name="arrow-down"></ion-icon>\n\n              Synchroniser les données\n\n      </button>\n\n\n\n      <div class="hr"></div>\n\n\n\n      <button ion-button icon-left block (click)="upload()">\n\n            <ion-icon name="arrow-down"></ion-icon>\n\n              Uploader les images\n\n      </button>\n\n\n\n      <button ion-button icon-left block *ngIf="!logged" (click)="login()">\n\n            <ion-icon name="arrow-down"></ion-icon>\n\n              Connexion\n\n      </button>\n\n\n\n      <button ion-button icon-left block *ngIf="logged" (click)="logout()" >\n\n            <ion-icon name="arrow-down"></ion-icon>\n\n              Déconexion\n\n      </button>\n\n\n\n    \n\n\n\n      <ul>\n\n        <li *ngFor="let image of images">{{ image.name }}</li>\n\n      </ul>\n\n    </div>\n\n      \n\n\n\n   \n\n    \n\n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n\n\n\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\misa-pc\ionic_projects\rezoom-app\src\pages\welcome\welcome.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_native_storage__["a" /* NativeStorage */]])
     ], WelcomePage);
     return WelcomePage;
 }());
