@@ -30,11 +30,11 @@ var map = {
 		14
 	],
 	"../pages/item-create/item-create.module": [
-		342,
+		343,
 		13
 	],
 	"../pages/item-detail/item-detail.module": [
-		343,
+		342,
 		12
 	],
 	"../pages/lieu-detail/lieu-detail.module": [
@@ -364,7 +364,7 @@ var RezoomProvider = /** @class */ (function () {
         // Then you'll be able to handle the myimage.png file as base64
     };
     RezoomProvider.prototype.importDatas = function () {
-        return [];
+        return this.http.get(this.site_url + "/mobile/get_lieu");
     };
     RezoomProvider.prototype.pathForImage = function (img) {
         if (img === null) {
@@ -521,8 +521,8 @@ var AppModule = /** @class */ (function () {
                     links: [
                         { loadChildren: '../pages/cards/cards.module#CardsPageModule', name: 'CardsPage', segment: 'cards', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/content/content.module#ContentPageModule', name: 'ContentPage', segment: 'content', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/item-create/item-create.module#ItemCreatePageModule', name: 'ItemCreatePage', segment: 'item-create', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/item-detail/item-detail.module#ItemDetailPageModule', name: 'ItemDetailPage', segment: 'item-detail', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/item-create/item-create.module#ItemCreatePageModule', name: 'ItemCreatePage', segment: 'item-create', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/lieu-detail/lieu-detail.module#LieuDetailPageModule', name: 'LieuDetailPage', segment: 'lieu-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/list-master/list-master.module#ListMasterPageModule', name: 'ListMasterPage', segment: 'list-master', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },

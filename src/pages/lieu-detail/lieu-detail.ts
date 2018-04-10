@@ -69,10 +69,10 @@ export class LieuDetailPage {
 	let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
 	  this.nativeStorage.getItem("lieux").then( lieux => {
 	  	let lieu = lieux.filter(function(elt){
-	  		return elt.id_lieux_rezoom === this.id_lieu;
+	  		return elt.lieu.id_lieux_rezoom === this.id_lieu;
 	  	})
 	  	this.lieu = lieu.lieu;
-	  	this.campagnes = lieu.campagnes
+	  	this.campagnes = lieu.campagnes;
 
 	  }, error => {
 	  	alert("Vos données locales ne sont pas à jour, veuillez les mettre à jour en vous connectant sur wifi.");
@@ -91,7 +91,7 @@ export class LieuDetailPage {
 	  // prior to doing any api requests as well.
 	
 	    this.rezoom.getLieu(this.id_lieu).subscribe(datas => {
-	  		console.log(datas);
+	  		
 	  		this.lieu = datas.lieu;
 	  		this.lieu_str = JSON.stringify(datas);
 	  		this.campagnes = datas.campagnes;

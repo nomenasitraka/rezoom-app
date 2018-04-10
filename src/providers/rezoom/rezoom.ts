@@ -124,7 +124,7 @@ export class RezoomProvider {
   }
 
   public importDatas(){
-    return [];
+    return this.http.get(this.site_url+"/mobile/get_lieu");
   }
 
    public pathForImage(img) {

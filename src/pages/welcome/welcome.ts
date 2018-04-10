@@ -63,9 +63,7 @@ export class WelcomePage {
     });
   }
 
-  clear(){
-   this.navCtrl.push("ListMasterPage");
-  }
+  
 
   importDatas(){
     this.loading = this.loadingCtrl.create({
@@ -79,10 +77,11 @@ export class WelcomePage {
       // We just got a connection but we need to wait briefly
        // before we determine the connection type. Might need to wait.
       // prior to doing any api requests as well.
-     
+
        
-          this.rezoom.importDatas().then(datas => {
+          this.rezoom.importDatas().subscribe(datas => {
               this.loading.dismissAll();
+              console.log(datas);
               this.nativeStorage.setItem("lieux", datas).then(d => {
                 alert("Données importées avec succès!");
               });
@@ -92,8 +91,18 @@ export class WelcomePage {
       
     });
 
+
+
     // stop connect watch
     connectSubscription.unsubscribe();
+
+    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      this.loading.dismissAll();
+       alert("Vous n'êtes pas connecté. Conectez-vous à un réseau wifi!");
+    });
+
+  // stop disconnect watch
+  disconnectSubscription.unsubscribe();
             
   }
 }
