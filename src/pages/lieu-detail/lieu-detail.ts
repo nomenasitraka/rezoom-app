@@ -84,6 +84,7 @@ export class LieuDetailPage {
 
 	  this.nativeStorage.getItem("lieux").then( lieux => {
 	  	this.lieu_str_all = JSON.stringify(lieux);
+	  	alert("id lieu : "this.id_lieu);
 	  	let lieu = lieux.value.filter(elt =>  elt.lieu.id_lieux_rezoom == this.id_lieu);
 	  	alert(lieu.nom_lieux);
 	  	this.lieu = lieu.lieu;
