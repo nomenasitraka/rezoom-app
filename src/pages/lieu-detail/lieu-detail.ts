@@ -43,7 +43,9 @@ export class LieuDetailPage {
   	date_now:any;
 
   	lieu_str:any;
+  	lieu_str_all:any;
   	base64:any;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public rezoom: RezoomProvider, private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController, public nativeStorage: NativeStorage,
   		private emailComposer: EmailComposer,
@@ -66,24 +68,27 @@ export class LieuDetailPage {
 
 	this.date_now = ""+date.getFullYear()+"-"+month+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
   	// watch network for a disconnect
-  	var networkState = navigator.connection.type;
-    var states = {};
-    states[Connection.UNKNOWN]  = 'Unknown connection';
-    states[Connection.ETHERNET] = 'Ethernet connection';
-    states[Connection.WIFI]     = 'WIFI';
-    states[Connection.CELL_2G]  = '2G';
-    states[Connection.CELL_3G]  = '3G';
-    states[Connection.CELL_4G]  = '4G';
-    states[Connection.CELL]     = 'Cell generic connection';
-    states[Connection.NONE]     = 'No network connection';
+  	// var networkState = navigator.connection.type;
+   //  var states = {};
+   //  states[Connection.UNKNOWN]  = 'Unknown connection';
+   //  states[Connection.ETHERNET] = 'Ethernet connection';
+   //  states[Connection.WIFI]     = 'WIFI';
+   //  states[Connection.CELL_2G]  = '2G';
+   //  states[Connection.CELL_3G]  = '3G';
+   //  states[Connection.CELL_4G]  = '4G';
+   //  states[Connection.CELL]     = 'Cell generic connection';
+   //  states[Connection.NONE]     = 'No network connection';
 
-	if(states[networkState] != "WIFI" && states[networkState] != "4G"){
+	if(!navigator.onLine){
+		alert("not online");
 
 	  this.nativeStorage.getItem("lieux").then( lieux => {
-	  
+	  	this.lieu_str_all = JSON.stringify(lieu_str);
 	  	let lieu = lieux.value.filter(elt =>  elt.lieu.id_lieux_rezoom == this.id_lieu);
+	  	alert(lieu.nom_lieux);
 	  	this.lieu = lieu.lieu;
 	  	this.campagnes = lieu.campagnes;
+	  	this.lieu_str =lieu;
 
 	  }, error => {
 	  	alert("Vos données locales ne sont pas à jour, veuillez les mettre à jour en vous connectant sur wifi.");
@@ -94,7 +99,7 @@ export class LieuDetailPage {
 
 
 	// watch network for a connection
-	if(states[networkState] == "WIFI" || states[networkState] == "4G"){
+	if(navigator.onLine){
 	  console.log('network connected!');
 	  // We just got a connection but we need to wait briefly
 	   // before we determine the connection type. Might need to wait.
@@ -103,7 +108,7 @@ export class LieuDetailPage {
 	    this.rezoom.getLieu(this.id_lieu).subscribe(datas => {
 	  		
 	  		this.lieu = datas.lieu;
-	  		this.lieu_str = JSON.stringify(datas);
+	  		
 	  		this.campagnes = datas.campagnes;
 
 	  	});
