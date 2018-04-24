@@ -47,6 +47,7 @@ export class WelcomePage {
 
     this.nativeStorage.getItem("lieux").then( lieux => {
         this.date_datas = lieux.date;
+        this.all_datas = lieux.value;
 
     });
   }
