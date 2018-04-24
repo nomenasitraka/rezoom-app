@@ -78,8 +78,9 @@ export class LieuDetailPage {
     states[Connection.NONE]     = 'No network connection';
 
 	if(states[networkState] != "WIFI" && states[networkState] != "4G"){
-	  this.nativeStorage.getItem("lieux").then( lieux => {
 
+	  this.nativeStorage.getItem("lieux").then( lieux => {
+	  	alert("lieux storage exist");
 	  	let lieu = lieux.value.filter(function(elt){
 	  		return elt.lieu.id_lieux_rezoom == this.id_lieu;
 	  	})

@@ -26,6 +26,8 @@ export class WelcomePage {
   images: any;
   loading: Loading;
   date_datas:any;
+
+  all_datas:any;
 	
   constructor(public navCtrl: NavController, public nativeStorage: NativeStorage,
     public loadingCtrl: LoadingController,
@@ -38,10 +40,15 @@ export class WelcomePage {
         this.logged = false;
       });
 
-      this.nativeStorage.getItem("lieux").then( lieux => {
-        this.date_datas = lieux.date;
-      });
+      
    }
+
+  ionViewDidLoad() {
+    this.nativeStorage.getItem("lieux").then( lieux => {
+        this.date_datas = lieux.date;
+
+    });
+  }
 
    
 
@@ -98,48 +105,18 @@ export class WelcomePage {
               var date_now = date.getDate()+" /"+month+" /"+date.getFullYear()+" à "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
               this.nativeStorage.setItem("lieux", {"date" :  date_now, "value": datas}).then(d => {
                 alert("Données importées avec succès!");
+                this.all_datas= JSON.stringify(d);
               });
 
             });
     } else{
-       this.loading.dismissAll();
        alert("Vous n'êtes pas connecté. Conectez-vous à un réseau wifi!");
+       this.loading.dismissAll();
     }
 
     
 
-    // watch network for a connection
-    // let connectSubscription = this.network.onConnect().subscribe(() => {
-    //   console.log('network connected!');
-      // We just got a connection but we need to wait briefly
-       // before we determine the connection type. Might need to wait.
-      // prior to doing any api requests as well.
-
-   
-          // this.rezoom.importDatas().subscribe(datas => {
-          //     this.loading.dismissAll();
-          //     console.log(datas);
-          //     this.nativeStorage.setItem("lieux", datas).then(d => {
-          //       alert("Données importées avec succès!");
-          //     });
-
-          //   });
-       
-      
-    // });
-
-
-
-    // stop connect watch
-    // connectSubscription.unsubscribe();
-
-    // let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-    //   this.loading.dismissAll();
-    //    alert("Vous n'êtes pas connecté. Conectez-vous à un réseau wifi!");
-    // });
-
-  // stop disconnect watch
-  // disconnectSubscription.unsubscribe();
+    
             
   }
 }

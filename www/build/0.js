@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 355:
+/***/ 354:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__ = __webpack_require__(119);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(371);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(370);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -44,7 +44,7 @@ var WelcomePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 371:
+/***/ 370:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -90,6 +90,12 @@ var WelcomePage = /** @class */ (function () {
             _this.logged = false;
         });
     }
+    WelcomePage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        this.nativeStorage.getItem("lieux").then(function (lieux) {
+            _this.date_datas = lieux.date;
+        });
+    };
     WelcomePage.prototype.scan = function () {
         this.navCtrl.push('ScanPage');
     };
@@ -129,48 +135,29 @@ var WelcomePage = /** @class */ (function () {
             this.rezoom.importDatas().subscribe(function (datas) {
                 _this.loading.dismissAll();
                 console.log(datas);
-                _this.nativeStorage.setItem("lieux", { "date": datas }).then(function (d) {
+                var d = Date.now();
+                var date = new Date(d);
+                var month = date.getMonth() + 1;
+                var date_now = date.getDate() + " /" + month + " /" + date.getFullYear() + " à " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+                _this.nativeStorage.setItem("lieux", { "date": date_now, "value": datas }).then(function (d) {
                     alert("Données importées avec succès!");
+                    _this.all_datas = JSON.stringify(d);
                 });
             });
         }
         else {
-            this.loading.dismissAll();
             alert("Vous n'êtes pas connecté. Conectez-vous à un réseau wifi!");
+            this.loading.dismissAll();
         }
-        // watch network for a connection
-        // let connectSubscription = this.network.onConnect().subscribe(() => {
-        //   console.log('network connected!');
-        // We just got a connection but we need to wait briefly
-        // before we determine the connection type. Might need to wait.
-        // prior to doing any api requests as well.
-        // this.rezoom.importDatas().subscribe(datas => {
-        //     this.loading.dismissAll();
-        //     console.log(datas);
-        //     this.nativeStorage.setItem("lieux", datas).then(d => {
-        //       alert("Données importées avec succès!");
-        //     });
-        //   });
-        // });
-        // stop connect watch
-        // connectSubscription.unsubscribe();
-        // let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-        //   this.loading.dismissAll();
-        //    alert("Vous n'êtes pas connecté. Conectez-vous à un réseau wifi!");
-        // });
-        // stop disconnect watch
-        // disconnectSubscription.unsubscribe();
     };
     WelcomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-welcome',template:/*ion-inline-start:"/home/misa/ionic_projects/rezoom-app/src/pages/welcome/welcome.html"*/'\n<ion-header>\n\n  <ion-navbar>\n  \n\n    <ion-title>REZOOM</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content scroll="false" *ngIf="!scanning" >\n  <!-- <div class="splash-bg"></div> -->\n    <div text-center>\n        <ion-img width="200" src="assets/img/logo.jpg"></ion-img>\n \n    </div>\n    \n    <div padding>\n\n      \n      <button ion-button icon-left block (click)="scan()" id="scan">\n            <ion-icon name="camera"></ion-icon> <br>\n            <b>SCAN QR CODE</b>  \n      </button>\n\n      <button ion-button icon-left block (click)="upload()" id="upload">\n            <ion-icon name="arrow-down"></ion-icon>\n            <b>UPLOADER LES IMAGES</b>  \n      </button>\n\n      <div class="hr"></div>\n      <div text-center *ngIf="date_datas">\n        VOUS SUIVEZ LE PLANNING TELECHARGE\n      </div>\n      <div text-center *ngIf="date_datas">\n        le {{ date_datas }}\n      </div>\n      <button ion-button icon-left block (click)="importDatas()">\n            <ion-icon name="arrow-down"></ion-icon>\n              SYNCHRONYSER LES DONNES\n      </button>\n      <div class="hr"></div>\n\n      \n\n      \n      <button ion-button icon-left block *ngIf="!logged" (click)="login()">\n            <ion-icon name="arrow-down"></ion-icon>\n              CONNEXION\n      </button>\n\n      <button ion-button icon-left block *ngIf="logged" (click)="logout()" >\n            <ion-icon name="arrow-down"></ion-icon>\n              DECONNEXION\n      </button>\n\n    \n\n      <ul>\n        <li *ngFor="let image of images">{{ image.name }}</li>\n      </ul>\n    </div>\n      \n\n   \n    \n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n\n\n</ion-content>\n'/*ion-inline-end:"/home/misa/ionic_projects/rezoom-app/src/pages/welcome/welcome.html"*/
+            selector: 'page-welcome',template:/*ion-inline-start:"/home/misa/ionic_projects/rezoom-app/src/pages/welcome/welcome.html"*/'\n<ion-header>\n\n  <ion-navbar>\n  \n\n    <ion-title>REZOOM</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content scroll="false" *ngIf="!scanning" >\n  <!-- <div class="splash-bg"></div> -->\n    <div text-center>\n        <ion-img width="200" src="assets/img/logo.jpg"></ion-img>\n \n    </div>\n    \n    <div padding>\n\n      \n      <button ion-button icon-left block (click)="scan()" id="scan">\n            <ion-icon name="camera"></ion-icon> <br>\n            <b>SCAN QR CODE</b>  \n      </button>\n\n      <button ion-button icon-left block (click)="upload()" id="upload">\n            <ion-icon name="arrow-down"></ion-icon>\n            <b>UPLOADER LES IMAGES</b>  \n      </button>\n\n      <div class="hr"></div>\n      <div text-center *ngIf="date_datas">\n        VOUS SUIVEZ LE PLANNING TELECHARGE\n      </div>\n      <div text-center *ngIf="date_datas">\n        le {{ date_datas }}\n      </div>\n      <button ion-button icon-left block (click)="importDatas()">\n            <ion-icon name="arrow-down"></ion-icon>\n              SYNCHRONYSER LES DONNES\n      </button>\n      <div class="hr"></div>\n\n      \n\n      \n      <button ion-button icon-left block *ngIf="!logged" (click)="login()">\n            <ion-icon name="arrow-down"></ion-icon>\n              CONNEXION\n      </button>\n\n      <button ion-button icon-left block *ngIf="logged" (click)="logout()" >\n            <ion-icon name="arrow-down"></ion-icon>\n              DECONNEXION\n      </button>\n      <div>\n        {{ all_datas }}\n      </div>\n    \n\n      <ul>\n        <li *ngFor="let image of images">{{ image.name }}</li>\n      </ul>\n    </div>\n      \n\n   \n    \n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n\n\n</ion-content>\n'/*ion-inline-end:"/home/misa/ionic_projects/rezoom-app/src/pages/welcome/welcome.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_native_storage__["a" /* NativeStorage */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_3__ionic_native_network__["a" /* Network */],
-            __WEBPACK_IMPORTED_MODULE_4__providers_rezoom_rezoom__["a" /* RezoomProvider */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_native_storage__["a" /* NativeStorage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_native_storage__["a" /* NativeStorage */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_network__["a" /* Network */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_network__["a" /* Network */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__providers_rezoom_rezoom__["a" /* RezoomProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_rezoom_rezoom__["a" /* RezoomProvider */]) === "function" && _e || Object])
     ], WelcomePage);
     return WelcomePage;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=welcome.js.map
