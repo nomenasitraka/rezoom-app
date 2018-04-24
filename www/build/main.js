@@ -30,11 +30,11 @@ var map = {
 		14
 	],
 	"../pages/item-create/item-create.module": [
-		343,
+		342,
 		13
 	],
 	"../pages/item-detail/item-detail.module": [
-		342,
+		343,
 		12
 	],
 	"../pages/lieu-detail/lieu-detail.module": [
@@ -42,11 +42,11 @@ var map = {
 		11
 	],
 	"../pages/list-master/list-master.module": [
-		345,
+		346,
 		10
 	],
 	"../pages/login/login.module": [
-		346,
+		345,
 		9
 	],
 	"../pages/menu/menu.module": [
@@ -521,11 +521,11 @@ var AppModule = /** @class */ (function () {
                     links: [
                         { loadChildren: '../pages/cards/cards.module#CardsPageModule', name: 'CardsPage', segment: 'cards', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/content/content.module#ContentPageModule', name: 'ContentPage', segment: 'content', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/item-detail/item-detail.module#ItemDetailPageModule', name: 'ItemDetailPage', segment: 'item-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/item-create/item-create.module#ItemCreatePageModule', name: 'ItemCreatePage', segment: 'item-create', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/item-detail/item-detail.module#ItemDetailPageModule', name: 'ItemDetailPage', segment: 'item-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/lieu-detail/lieu-detail.module#LieuDetailPageModule', name: 'LieuDetailPage', segment: 'lieu-detail', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/list-master/list-master.module#ListMasterPageModule', name: 'ListMasterPage', segment: 'list-master', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/list-master/list-master.module#ListMasterPageModule', name: 'ListMasterPage', segment: 'list-master', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/menu/menu.module#MenuPageModule', name: 'MenuPage', segment: 'menu', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/scan/scan.module#ScanPageModule', name: 'ScanPage', segment: 'scan', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/search/search.module#SearchPageModule', name: 'SearchPage', segment: 'search', priority: 'low', defaultHistory: [] },

@@ -25770,6 +25770,17 @@ page-tutorial p b {
   color: #000000;
 }
 
+page-welcome #scan {
+  height: 150px;
+  margin-bottom: 24%;
+  font-size: 2em;
+}
+
+page-welcome #upload {
+  height: 75px;
+  font-size: 1.5em;
+}
+
 page-welcome .splash-bg {
   position: relative;
   background: url("../assets/img/splashbg.png") no-repeat transparent;

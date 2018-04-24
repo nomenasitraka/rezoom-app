@@ -1,4 +1,15 @@
 page-welcome {
+
+  #scan{
+    height: 150px;
+    margin-bottom: 24%;
+    font-size: 2em;
+  }
+  #upload{
+    height: 75px;
+    font-size: 1.5em;
+  }
+  
   .splash-bg {
     position: relative;
     background: url('../assets/img/splashbg.png') no-repeat transparent;

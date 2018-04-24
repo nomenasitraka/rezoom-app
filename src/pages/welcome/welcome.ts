@@ -25,6 +25,7 @@ export class WelcomePage {
   scanning = false;
   images: any;
   loading: Loading;
+  date_datas:any;
 	
   constructor(public navCtrl: NavController, public nativeStorage: NativeStorage,
     public loadingCtrl: LoadingController,
@@ -35,7 +36,11 @@ export class WelcomePage {
         this.logged = true;
       }, error => {
         this.logged = false;
-      })
+      });
+
+      this.nativeStorage.getItem("lieux").then( lieux => {
+        this.date_datas = lieux.date;
+      });
    }
 
    
@@ -70,39 +75,71 @@ export class WelcomePage {
         content: 'Importation des données...',
     });
     this.loading.present();
+    var networkState = navigator.connection.type;
+    var states = {};
+    states[Connection.UNKNOWN]  = 'Unknown connection';
+    states[Connection.ETHERNET] = 'Ethernet connection';
+    states[Connection.WIFI]     = 'WIFI';
+    states[Connection.CELL_2G]  = '2G';
+    states[Connection.CELL_3G]  = '3G';
+    states[Connection.CELL_4G]  = '4G';
+    states[Connection.CELL]     = 'Cell generic connection';
+    states[Connection.NONE]     = 'No network connection';
 
-    // watch network for a connection
-    let connectSubscription = this.network.onConnect().subscribe(() => {
-      console.log('network connected!');
-      // We just got a connection but we need to wait briefly
-       // before we determine the connection type. Might need to wait.
-      // prior to doing any api requests as well.
-
-       
-          this.rezoom.importDatas().subscribe(datas => {
+    if(states[networkState] == "WIFI" || states[networkState] == "4G"){
+        this.loading.dismissAll();
+        this.rezoom.importDatas().subscribe(datas => {
               this.loading.dismissAll();
               console.log(datas);
-              this.nativeStorage.setItem("lieux", datas).then(d => {
+              var d = Date.now();
+              var date = new Date(d);
+              var month = date.getMonth()+1;
+
+              var date_now = date.getDate()+" /"+month+" /"+date.getFullYear()+" à "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+              this.nativeStorage.setItem("lieux", {"date" :  date_now, "value": datas}).then(d => {
                 alert("Données importées avec succès!");
               });
 
             });
+    } else{
+       this.loading.dismissAll();
+       alert("Vous n'êtes pas connecté. Conectez-vous à un réseau wifi!");
+    }
+
+    
+
+    // watch network for a connection
+    // let connectSubscription = this.network.onConnect().subscribe(() => {
+    //   console.log('network connected!');
+      // We just got a connection but we need to wait briefly
+       // before we determine the connection type. Might need to wait.
+      // prior to doing any api requests as well.
+
+   
+          // this.rezoom.importDatas().subscribe(datas => {
+          //     this.loading.dismissAll();
+          //     console.log(datas);
+          //     this.nativeStorage.setItem("lieux", datas).then(d => {
+          //       alert("Données importées avec succès!");
+          //     });
+
+          //   });
        
       
-    });
+    // });
 
 
 
     // stop connect watch
-    connectSubscription.unsubscribe();
+    // connectSubscription.unsubscribe();
 
-    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-      this.loading.dismissAll();
-       alert("Vous n'êtes pas connecté. Conectez-vous à un réseau wifi!");
-    });
+    // let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+    //   this.loading.dismissAll();
+    //    alert("Vous n'êtes pas connecté. Conectez-vous à un réseau wifi!");
+    // });
 
   // stop disconnect watch
-  disconnectSubscription.unsubscribe();
+  // disconnectSubscription.unsubscribe();
             
   }
 }

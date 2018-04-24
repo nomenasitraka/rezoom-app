@@ -66,25 +66,37 @@ export class LieuDetailPage {
 
 	this.date_now = ""+date.getFullYear()+"-"+month+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
   	// watch network for a disconnect
-	let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+  	var networkState = navigator.connection.type;
+    var states = {};
+    states[Connection.UNKNOWN]  = 'Unknown connection';
+    states[Connection.ETHERNET] = 'Ethernet connection';
+    states[Connection.WIFI]     = 'WIFI';
+    states[Connection.CELL_2G]  = '2G';
+    states[Connection.CELL_3G]  = '3G';
+    states[Connection.CELL_4G]  = '4G';
+    states[Connection.CELL]     = 'Cell generic connection';
+    states[Connection.NONE]     = 'No network connection';
+
+	if(states[networkState] != "WIFI" && states[networkState] != "4G"){
 	  this.nativeStorage.getItem("lieux").then( lieux => {
-	  	let lieu = lieux.filter(function(elt){
-	  		return elt.lieu.id_lieux_rezoom === this.id_lieu;
+
+	  	let lieu = lieux.value.filter(function(elt){
+	  		return elt.lieu.id_lieux_rezoom == this.id_lieu;
 	  	})
 	  	this.lieu = lieu.lieu;
+	  	alert(lieu.lieu.nom_lieux);
 	  	this.campagnes = lieu.campagnes;
 
 	  }, error => {
 	  	alert("Vos données locales ne sont pas à jour, veuillez les mettre à jour en vous connectant sur wifi.");
 	  	this.navCtrl.push("WelcomePage");
-	  })
-	});
+	  });
+	};
 
-	// stop disconnect watch
-	disconnectSubscription.unsubscribe();
+
 
 	// watch network for a connection
-	let connectSubscription = this.network.onConnect().subscribe(() => {
+	if(states[networkState] == "WIFI" || states[networkState] == "4G"){
 	  console.log('network connected!');
 	  // We just got a connection but we need to wait briefly
 	   // before we determine the connection type. Might need to wait.
@@ -98,14 +110,11 @@ export class LieuDetailPage {
 
 	  	});
 
-	});
+	};
 
-	// stop connect watch
-	connectSubscription.unsubscribe();
 
 
   	
-    console.log('ionViewDidLoad LieuDetailPage');
   }
 
   public login(){

@@ -11,34 +11,48 @@
 
 <ion-content scroll="false" *ngIf="!scanning" >
   <!-- <div class="splash-bg"></div> -->
+    <div text-center>
+        <ion-img width="200" src="assets/img/logo.jpg"></ion-img>
  
+    </div>
+    
     <div padding>
+
       
-      <button ion-button icon-left block (click)="scan()">
+      <button ion-button icon-left block (click)="scan()" id="scan">
             <ion-icon name="camera"></ion-icon> <br>
-              SCAN QR CODE
+            <b>SCAN QR CODE</b>  
       </button>
 
-      <button ion-button icon-left block (click)="importDatas()">
+      <button ion-button icon-left block (click)="upload()" id="upload">
             <ion-icon name="arrow-down"></ion-icon>
-              Synchroniser les données
+            <b>UPLOADER LES IMAGES</b>  
       </button>
 
       <div class="hr"></div>
-
-      <button ion-button icon-left block (click)="upload()">
+      <div text-center *ngIf="date_datas">
+        VOUS SUIVEZ LE PLANNING TELECHARGE
+      </div>
+      <div text-center *ngIf="date_datas">
+        le {{ date_datas }}
+      </div>
+      <button ion-button icon-left block (click)="importDatas()">
             <ion-icon name="arrow-down"></ion-icon>
-              Uploader les images
+              SYNCHRONYSER LES DONNES
       </button>
+      <div class="hr"></div>
 
+      
+
+      
       <button ion-button icon-left block *ngIf="!logged" (click)="login()">
             <ion-icon name="arrow-down"></ion-icon>
-              Connexion
+              CONNEXION
       </button>
 
       <button ion-button icon-left block *ngIf="logged" (click)="logout()" >
             <ion-icon name="arrow-down"></ion-icon>
-              Déconexion
+              DECONNEXION
       </button>
 
     
