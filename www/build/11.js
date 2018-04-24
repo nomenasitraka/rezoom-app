@@ -128,7 +128,7 @@ var LieuDetailPage = /** @class */ (function () {
         if (!navigator.onLine) {
             alert("not online");
             this.nativeStorage.getItem("lieux").then(function (lieux) {
-                _this.lieu_str_all = JSON.stringify(lieu_str);
+                _this.lieu_str_all = JSON.stringify(lieux);
                 var lieu = lieux.value.filter(function (elt) { return elt.lieu.id_lieux_rezoom == _this.id_lieu; });
                 alert(lieu.nom_lieux);
                 _this.lieu = lieu.lieu;
