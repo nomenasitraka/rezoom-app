@@ -44,6 +44,7 @@ export class WelcomePage {
    }
 
   ionViewDidLoad() {
+
     this.nativeStorage.getItem("lieux").then( lieux => {
         this.date_datas = lieux.date;
 
