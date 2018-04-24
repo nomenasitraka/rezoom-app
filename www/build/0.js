@@ -115,11 +115,6 @@ var WelcomePage = /** @class */ (function () {
         });
     };
     WelcomePage.prototype.importDatas = function () {
-        var _this = this;
-        this.loading = this.loadingCtrl.create({
-            content: 'Importation des données...',
-        });
-        this.loading.present();
         // var networkState = navigator.connection.type;
         // var states = {};
         // states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -130,7 +125,12 @@ var WelcomePage = /** @class */ (function () {
         // states[Connection.CELL_4G]  = '4G';
         // states[Connection.CELL]     = 'Cell generic connection';
         // states[Connection.NONE]     = 'No network connection';
+        var _this = this;
         if (navigator.onLine) {
+            this.loading = this.loadingCtrl.create({
+                content: 'Importation des données...',
+            });
+            this.loading.present();
             this.rezoom.importDatas().subscribe(function (datas) {
                 _this.loading.dismissAll();
                 var d = Date.now();
@@ -139,6 +139,7 @@ var WelcomePage = /** @class */ (function () {
                 var date_now = date.getDate() + "/" + month + "/" + date.getFullYear() + " à " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
                 _this.nativeStorage.remove("lieux").then(function (rm) {
                     _this.nativeStorage.setItem("lieux", { "date": date_now, "value": datas }).then(function (d) {
+                        _this.date_datas = date_now;
                         alert("Données importées avec succès!");
                     });
                 });
@@ -155,12 +156,14 @@ var WelcomePage = /** @class */ (function () {
     };
     WelcomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-welcome',template:/*ion-inline-start:"/home/misa/ionic_projects/rezoom-app/src/pages/welcome/welcome.html"*/'\n<ion-header>\n\n  <ion-navbar>\n  \n\n    <ion-title>REZOOM</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content scroll="false" *ngIf="!scanning" >\n  <!-- <div class="splash-bg"></div> -->\n    <div text-center>\n        <ion-img width="200" src="assets/img/logo.jpg"></ion-img>\n \n    </div>\n    \n    <div padding>\n\n      \n      <button ion-button icon-left block (click)="scan()" id="scan">\n            <ion-icon name="camera"></ion-icon> <br>\n            <b>SCAN QR CODE</b>  \n      </button>\n\n      <button ion-button icon-left block (click)="upload()" id="upload">\n            <ion-icon name="arrow-down"></ion-icon>\n            <b>UPLOADER LES IMAGES</b>  \n      </button>\n\n      <div class="hr"></div>\n      <div text-center *ngIf="date_datas">\n        VOUS SUIVEZ LE PLANNING TELECHARGE\n      </div>\n      <div text-center *ngIf="date_datas">\n        le {{ date_datas }}\n      </div>\n      <button ion-button icon-left block (click)="importDatas()">\n            <ion-icon name="arrow-down"></ion-icon>\n              SYNCHRONYSER LES DONNES\n      </button>\n      <div class="hr"></div>\n\n      \n\n      \n      <button ion-button icon-left block *ngIf="!logged" (click)="login()">\n            <ion-icon name="arrow-down"></ion-icon>\n              CONNEXION\n      </button>\n\n      <button ion-button icon-left block *ngIf="logged" (click)="logout()" >\n            <ion-icon name="arrow-down"></ion-icon>\n              DECONNEXION\n      </button>\n      \n\n      <ul>\n        <li *ngFor="let image of images">{{ image.name }}</li>\n      </ul>\n    </div>\n      \n\n   \n    \n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n\n\n</ion-content>\n'/*ion-inline-end:"/home/misa/ionic_projects/rezoom-app/src/pages/welcome/welcome.html"*/
+            selector: 'page-welcome',template:/*ion-inline-start:"/home/misa/ionic_projects/rezoom-app/src/pages/welcome/welcome.html"*/'\n<ion-header>\n\n  <ion-navbar>\n  \n\n    <ion-title>REZOOM</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content scroll="false" *ngIf="!scanning" >\n  <!-- <div class="splash-bg"></div> -->\n    <div text-center>\n        <ion-img width="200" src="assets/img/logo.jpg"></ion-img>\n \n    </div>\n    \n    <div padding>\n\n      \n      <button ion-button icon-left block (click)="scan()" id="scan">\n            <ion-icon name="camera"></ion-icon> <br>\n            <b>SCAN QR CODE</b>  \n      </button>\n\n      <button ion-button icon-left block (click)="upload()" id="upload">\n            <ion-icon name="arrow-down"></ion-icon>\n            <b>UPLOADER LES IMAGES</b>  \n      </button>\n\n      <div class="hr"></div>\n      <div text-center *ngIf="date_datas">\n        VOUS SUIVEZ LE PLANNING TELECHARGE\n      </div>\n      <div text-center *ngIf="date_datas">\n        le {{ date_datas }}\n      </div>\n      <button ion-button icon-left block (click)="importDatas()">\n            <ion-icon name="arrow-down"></ion-icon>\n              SYNCHRONYSER LES DONNEeS\n      </button>\n      <div class="hr"></div>\n\n      \n\n      \n      <button ion-button icon-left block *ngIf="!logged" (click)="login()">\n            <ion-icon name="arrow-down"></ion-icon>\n              CONNEXION\n      </button>\n\n      <button ion-button icon-left block *ngIf="logged" (click)="logout()" >\n            <ion-icon name="arrow-down"></ion-icon>\n              DECONNEXION\n      </button>\n      \n\n      <ul>\n        <li *ngFor="let image of images">{{ image.name }}</li>\n      </ul>\n    </div>\n      \n\n   \n    \n    <!-- <button ion-button block (click)="login()" class="login">{{ \'LOGIN\' | translate }}</button> -->\n\n\n\n</ion-content>\n'/*ion-inline-end:"/home/misa/ionic_projects/rezoom-app/src/pages/welcome/welcome.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_native_storage__["a" /* NativeStorage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_native_storage__["a" /* NativeStorage */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_network__["a" /* Network */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_network__["a" /* Network */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__providers_rezoom_rezoom__["a" /* RezoomProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_rezoom_rezoom__["a" /* RezoomProvider */]) === "function" && _e || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_native_storage__["a" /* NativeStorage */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_3__ionic_native_network__["a" /* Network */],
+            __WEBPACK_IMPORTED_MODULE_4__providers_rezoom_rezoom__["a" /* RezoomProvider */]])
     ], WelcomePage);
     return WelcomePage;
-    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=welcome.js.map

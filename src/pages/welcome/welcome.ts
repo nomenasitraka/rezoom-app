@@ -78,10 +78,7 @@ export class WelcomePage {
   
 
   importDatas(){
-    this.loading = this.loadingCtrl.create({
-        content: 'Importation des données...',
-    });
-    this.loading.present();
+    
     // var networkState = navigator.connection.type;
     // var states = {};
     // states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -94,6 +91,10 @@ export class WelcomePage {
     // states[Connection.NONE]     = 'No network connection';
 
     if(navigator.onLine){
+        this.loading = this.loadingCtrl.create({
+          content: 'Importation des données...',
+        });
+        this.loading.present();
        
         this.rezoom.importDatas().subscribe(datas => {
               this.loading.dismissAll();
@@ -105,6 +106,7 @@ export class WelcomePage {
               var date_now = date.getDate()+"/"+month+"/"+date.getFullYear()+" à "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
               this.nativeStorage.remove("lieux").then(rm => {
                   this.nativeStorage.setItem("lieux",  {"date": date_now, "value": datas}).then(d => {
+                    this.date_datas = date_now;
                     alert("Données importées avec succès!");
                     
                   });
