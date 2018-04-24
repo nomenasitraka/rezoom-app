@@ -82,31 +82,38 @@ export class WelcomePage {
         content: 'Importation des données...',
     });
     this.loading.present();
-    var networkState = navigator.connection.type;
-    var states = {};
-    states[Connection.UNKNOWN]  = 'Unknown connection';
-    states[Connection.ETHERNET] = 'Ethernet connection';
-    states[Connection.WIFI]     = 'WIFI';
-    states[Connection.CELL_2G]  = '2G';
-    states[Connection.CELL_3G]  = '3G';
-    states[Connection.CELL_4G]  = '4G';
-    states[Connection.CELL]     = 'Cell generic connection';
-    states[Connection.NONE]     = 'No network connection';
+    // var networkState = navigator.connection.type;
+    // var states = {};
+    // states[Connection.UNKNOWN]  = 'Unknown connection';
+    // states[Connection.ETHERNET] = 'Ethernet connection';
+    // states[Connection.WIFI]     = 'WIFI';
+    // states[Connection.CELL_2G]  = '2G';
+    // states[Connection.CELL_3G]  = '3G';
+    // states[Connection.CELL_4G]  = '4G';
+    // states[Connection.CELL]     = 'Cell generic connection';
+    // states[Connection.NONE]     = 'No network connection';
 
-    if(states[networkState] == "WIFI" || states[networkState] == "4G"){
-        this.loading.dismissAll();
+    if(navigator.onLine){
+       
         this.rezoom.importDatas().subscribe(datas => {
               this.loading.dismissAll();
-              console.log(datas);
+              
               var d = Date.now();
               var date = new Date(d);
               var month = date.getMonth()+1;
 
-              var date_now = date.getDate()+" /"+month+" /"+date.getFullYear()+" à "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-              this.nativeStorage.setItem("lieux", {"date" :  date_now, "value": datas}).then(d => {
-                alert("Données importées avec succès!");
-                this.all_datas= JSON.stringify(d);
-              });
+              var date_now = date.getDate()+"/"+month+"/"+date.getFullYear()+" à "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+              this.nativeStorage.remove("lieux").then(rm => {
+                  this.nativeStorage.setItem("lieux",  {"date": date_now, "value": datas}).then(d => {
+                    alert("Données importées avec succès!");
+                    
+                  });
+              })
+                
+              // var lieux  =  {"date": date_now, "value": datas}
+              // let lieu = lieux.value.filter(elt =>  elt.lieu.id_lieux_rezoom == 622);
+              // console.log(lieu);
+              // console.log(lieux.date);
 
             });
     } else{

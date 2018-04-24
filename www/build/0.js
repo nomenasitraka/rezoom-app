@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 354:
+/***/ 355:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__ = __webpack_require__(119);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(370);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__welcome__ = __webpack_require__(371);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -44,7 +44,7 @@ var WelcomePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 370:
+/***/ 371:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -120,29 +120,32 @@ var WelcomePage = /** @class */ (function () {
             content: 'Importation des données...',
         });
         this.loading.present();
-        var networkState = navigator.connection.type;
-        var states = {};
-        states[Connection.UNKNOWN] = 'Unknown connection';
-        states[Connection.ETHERNET] = 'Ethernet connection';
-        states[Connection.WIFI] = 'WIFI';
-        states[Connection.CELL_2G] = '2G';
-        states[Connection.CELL_3G] = '3G';
-        states[Connection.CELL_4G] = '4G';
-        states[Connection.CELL] = 'Cell generic connection';
-        states[Connection.NONE] = 'No network connection';
-        if (states[networkState] == "WIFI" || states[networkState] == "4G") {
-            this.loading.dismissAll();
+        // var networkState = navigator.connection.type;
+        // var states = {};
+        // states[Connection.UNKNOWN]  = 'Unknown connection';
+        // states[Connection.ETHERNET] = 'Ethernet connection';
+        // states[Connection.WIFI]     = 'WIFI';
+        // states[Connection.CELL_2G]  = '2G';
+        // states[Connection.CELL_3G]  = '3G';
+        // states[Connection.CELL_4G]  = '4G';
+        // states[Connection.CELL]     = 'Cell generic connection';
+        // states[Connection.NONE]     = 'No network connection';
+        if (navigator.onLine) {
             this.rezoom.importDatas().subscribe(function (datas) {
                 _this.loading.dismissAll();
-                console.log(datas);
                 var d = Date.now();
                 var date = new Date(d);
                 var month = date.getMonth() + 1;
-                var date_now = date.getDate() + " /" + month + " /" + date.getFullYear() + " à " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-                _this.nativeStorage.setItem("lieux", { "date": date_now, "value": datas }).then(function (d) {
-                    alert("Données importées avec succès!");
-                    _this.all_datas = JSON.stringify(d);
+                var date_now = date.getDate() + "/" + month + "/" + date.getFullYear() + " à " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+                _this.nativeStorage.remove("lieux").then(function (rm) {
+                    _this.nativeStorage.setItem("lieux", { "date": date_now, "value": datas }).then(function (d) {
+                        alert("Données importées avec succès!");
+                    });
                 });
+                // var lieux  =  {"date": date_now, "value": datas}
+                // let lieu = lieux.value.filter(elt =>  elt.lieu.id_lieux_rezoom == 622);
+                // console.log(lieu);
+                // console.log(lieux.date);
             });
         }
         else {

@@ -80,12 +80,9 @@ export class LieuDetailPage {
 	if(states[networkState] != "WIFI" && states[networkState] != "4G"){
 
 	  this.nativeStorage.getItem("lieux").then( lieux => {
-	  	alert("lieux storage exist");
-	  	let lieu = lieux.value.filter(function(elt){
-	  		return elt.lieu.id_lieux_rezoom == this.id_lieu;
-	  	})
+	  
+	  	let lieu = lieux.value.filter(elt =>  elt.lieu.id_lieux_rezoom == this.id_lieu);
 	  	this.lieu = lieu.lieu;
-	  	alert(lieu.lieu.nom_lieux);
 	  	this.campagnes = lieu.campagnes;
 
 	  }, error => {

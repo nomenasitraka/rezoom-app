@@ -1,6 +1,6 @@
 webpackJsonp([11],{
 
-/***/ 345:
+/***/ 346:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LieuDetailPageModule", function() { return LieuDetailPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lieu_detail__ = __webpack_require__(361);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lieu_detail__ = __webpack_require__(362);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var LieuDetailPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 361:
+/***/ 362:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -127,12 +127,8 @@ var LieuDetailPage = /** @class */ (function () {
         states[Connection.NONE] = 'No network connection';
         if (states[networkState] != "WIFI" && states[networkState] != "4G") {
             this.nativeStorage.getItem("lieux").then(function (lieux) {
-                alert("lieux storage exist");
-                var lieu = lieux.value.filter(function (elt) {
-                    return elt.lieu.id_lieux_rezoom == this.id_lieu;
-                });
+                var lieu = lieux.value.filter(function (elt) { return elt.lieu.id_lieux_rezoom == _this.id_lieu; });
                 _this.lieu = lieu.lieu;
-                alert(lieu.lieu.nom_lieux);
                 _this.campagnes = lieu.campagnes;
             }, function (error) {
                 alert("Vos données locales ne sont pas à jour, veuillez les mettre à jour en vous connectant sur wifi.");
