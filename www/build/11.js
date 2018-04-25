@@ -130,7 +130,7 @@ var LieuDetailPage = /** @class */ (function () {
         //  states[Connection.CELL]     = 'Cell generic connection';
         //  states[Connection.NONE]     = 'No network connection';
         if (!navigator.onLine) {
-            this.storage.get('lieux').then(function (lieux) {
+            this.nativeStorage.getItem('lieux').then(function (lieux) {
                 _this.lieu_str_all = JSON.stringify(lieux);
                 console.log("id lieu :" + _this.id_lieu);
                 console.log(lieux);

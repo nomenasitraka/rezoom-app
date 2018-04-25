@@ -47,7 +47,7 @@ export class WelcomePage {
 
   ionViewDidLoad() {
 
-    this.storage.get('lieux').then((lieux) => {
+    this.nativeStorage.getItem('lieux').then((lieux) => {
         this.date_datas = lieux.date;
     });
   }
@@ -118,8 +118,8 @@ export class WelcomePage {
 
 
               console.log("storing");
-              this.storage.set("lieux", {"date" : date_now, "lieux": datas});
-              this.storage.get('lieux').then((lieux) => {
+              this.nativeStorage.setItem("lieux", {"date" : date_now, "lieux": datas});
+              this.nativeStorage.getItem('lieux').then((lieux) => {
                   this.date_datas = lieux.date;
                   this.loading.dismissAll();
               });

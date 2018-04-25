@@ -85,7 +85,7 @@ export class LieuDetailPage {
 
 	if(!navigator.onLine){
 		
-	  this.storage.get('lieux').then((lieux) => {
+	  this.nativeStorage.getItem('lieux').then((lieux) => {
 	  	this.lieu_str_all = JSON.stringify(lieux);
 	  	
 	  	console.log("id lieu :"+ this.id_lieu);

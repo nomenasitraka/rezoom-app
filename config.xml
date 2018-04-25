@@ -89,5 +89,5 @@
     <plugin name="cordova-plugin-email-composer" spec="^0.8.15" />
     <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
-    <plugin name="cordova-sqlite-storage" spec="~2.3.1" />
+   <!--  <plugin name="cordova-sqlite-storage" spec="~2.3.1" /> -->
 </widget>
