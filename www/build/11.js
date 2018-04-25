@@ -173,22 +173,27 @@ var LieuDetailPage = /** @class */ (function () {
     };
     LieuDetailPage.prototype.login = function () {
         var _this = this;
-        this.loading = this.loadingCtrl.create({
-            content: 'Identification...',
-        });
-        this.loading.present();
-        this.rezoom.login(this.identity, this.password).subscribe(function (datas) {
-            _this.loading.dismissAll();
-            console.log(datas);
-            if (datas.status == "ok") {
-                _this.logged = true;
-                _this.user = datas.user;
-                _this.nativeStorage.setItem("user", datas.user).then(function (data) { });
-            }
-            else {
-                alert("Erreur d'authentification");
-            }
-        });
+        if (navigator.onLine) {
+            this.loading = this.loadingCtrl.create({
+                content: 'Identification...',
+            });
+            this.loading.present();
+            this.rezoom.login(this.identity, this.password).subscribe(function (datas) {
+                _this.loading.dismissAll();
+                console.log(datas);
+                if (datas.status == "ok") {
+                    _this.logged = true;
+                    _this.user = datas.user;
+                    _this.nativeStorage.setItem("user", datas.user).then(function (data) { });
+                }
+                else {
+                    alert("Erreur d'authentification");
+                }
+            });
+        }
+        else {
+            alert("Connectez vous à un réseau wifi!");
+        }
     };
     LieuDetailPage.prototype.signaler = function () {
         var _this = this;

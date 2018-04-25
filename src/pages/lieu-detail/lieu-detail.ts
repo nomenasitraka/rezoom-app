@@ -141,23 +141,27 @@ export class LieuDetailPage {
 	}
 
   public login(){
-
-  	this.loading = this.loadingCtrl.create({
-	    content: 'Identification...',
-	});
-	this.loading.present();
-  	
-  	this.rezoom.login(this.identity, this.password).subscribe(datas =>{
-  		this.loading.dismissAll();
-  		console.log(datas);
-  		if(datas.status == "ok"){
-  			this.logged = true;
-  			this.user = datas.user;
-  			this.nativeStorage.setItem("user", datas.user).then(data => {})
-  		}else{
-  			alert("Erreur d'authentification");
-  		}
-  	});
+  	if(navigator.onLine){
+      this.loading = this.loadingCtrl.create({
+		    content: 'Identification...',
+		});
+		this.loading.present();
+	  	
+	  	this.rezoom.login(this.identity, this.password).subscribe(datas =>{
+	  		this.loading.dismissAll();
+	  		console.log(datas);
+	  		if(datas.status == "ok"){
+	  			this.logged = true;
+	  			this.user = datas.user;
+	  			this.nativeStorage.setItem("user", datas.user).then(data => {})
+	  		}else{
+	  			alert("Erreur d'authentification");
+	  		}
+	  	});
+    }else{
+      alert("Connectez vous à un réseau wifi!");
+    }
+	  	
   }
 
   public signaler(){

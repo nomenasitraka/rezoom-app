@@ -60,7 +60,12 @@ export class WelcomePage {
   }
 
   login() {
-    this.navCtrl.push('LoginPage');
+    if(navigator.onLine){
+      this.navCtrl.push('LoginPage');
+    }else{
+      alert("Connectez vous à un réseau wifi!");
+    }
+    
   }
 
   signup() {
