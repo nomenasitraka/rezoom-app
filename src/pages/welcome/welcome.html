@@ -25,7 +25,7 @@
       </button>
 
       <button ion-button icon-left block (click)="upload()" id="upload">
-            <ion-icon name="arrow-down"></ion-icon>
+            <ion-icon name="arrow-round-up"></ion-icon>
             <b>UPLOADER LES IMAGES</b>  
       </button>
 
@@ -37,7 +37,7 @@
         le {{ date_datas }}
       </div>
       <button ion-button icon-left block (click)="importDatas()">
-            <ion-icon name="arrow-down"></ion-icon>
+            <ion-icon name="refresh"></ion-icon>
               SYNCHRONYSER LES DONNEES
       </button>
       <div class="hr"></div>
@@ -46,24 +46,20 @@
 
       
       <button ion-button icon-left block *ngIf="!logged" (click)="login()">
-            <ion-icon name="arrow-down"></ion-icon>
+            <ion-icon name="person"></ion-icon>
               CONNEXION
       </button>
 
       <button ion-button icon-left block *ngIf="logged" (click)="logout()" >
-            <ion-icon name="arrow-down"></ion-icon>
+            <ion-icon name="person"></ion-icon>
               DECONNEXION
       </button>
       
 
-      <ul>
-        <li *ngFor="let image of images">{{ image.name }}</li>
-      </ul>
+      
     </div>
 
-    <div>
-      {{ all_datas }}
-    </div>
+   
       
 
    

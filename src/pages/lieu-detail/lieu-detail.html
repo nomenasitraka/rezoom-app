@@ -21,7 +21,7 @@
 	 	</div >
 	 	<div class="hr"> </div>
 	 	<div>
-	 		<p><span class="bold">NOUS SOMME EN SEMAINE :</span>  5</p>
+	 		<p><span class="bold">NOUS SOMME EN SEMAINE :</span>  {{ weekNo }}</p>
 	 		<p><span class="bold">IL EST :</span>  {{ date_now }}</p>
 	 	
 	 	</div>
@@ -102,13 +102,7 @@
 	 		
 	 	</div>
 
-	 	<div>
-      			{{ lieu_str }}
-      		</div>
-      		<div>
-      			{{ lieu_str_all }}
-      		</div>
-
+	 	
 	 	
 
 		<div *ngIf="logged">

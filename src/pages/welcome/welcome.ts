@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController,LoadingController, Loading } from 'ionic-angular';
 import { NativeStorage } from '@ionic-native/native-storage';
+import { Storage } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
 
 import { RezoomProvider } from '../../providers/rezoom/rezoom';
@@ -32,7 +33,8 @@ export class WelcomePage {
   constructor(public navCtrl: NavController, public nativeStorage: NativeStorage,
     public loadingCtrl: LoadingController,
     private network: Network,
-    public rezoom: RezoomProvider
+    public rezoom: RezoomProvider,
+    public storage: Storage
     ) {
       this.nativeStorage.getItem("user").then(user =>{
         this.logged = true;
@@ -45,10 +47,8 @@ export class WelcomePage {
 
   ionViewDidLoad() {
 
-    this.nativeStorage.getItem("lieux").then( lieux => {
+    this.storage.get('lieux').then((lieux) => {
         this.date_datas = lieux.date;
-        this.all_datas = lieux.value;
-
     });
   }
 
@@ -99,25 +99,30 @@ export class WelcomePage {
         this.loading.present();
        
         this.rezoom.importDatas().subscribe(datas => {
-              this.loading.dismissAll();
+              
               
               var d = Date.now();
               var date = new Date(d);
               var month = date.getMonth()+1;
 
-              var date_now = date.getDate()+"/"+month+"/"+date.getFullYear()+" à "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-              this.nativeStorage.remove("lieux").then(rm => {
-                  this.nativeStorage.setItem("lieux",  {"date": date_now, "value": datas}).then(d => {
-                    this.date_datas = date_now;
-                    alert("Données importées avec succès!");
+              var date_now = (date.getDate() < 10 ? "0"+date.getDate() : date.getDate())+"/"+(month < 10 ? "0"+month : month)+"/"+date.getFullYear()+" à "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+              // this.nativeStorage.remove("lieux").then(rm => {
+              //     this.nativeStorage.setItem("lieux",  {"date": date_now, "value": datas}).then(d => {
+              //       this.date_datas = d.date_now;
+              //       this.
+              //       alert("Données importées avec succès!");
                     
-                  });
-              })
-                
-              // var lieux  =  {"date": date_now, "value": datas}
-              // let lieu = lieux.value.filter(elt =>  elt.lieu.id_lieux_rezoom == 622);
-              // console.log(lieu);
-              // console.log(lieux.date);
+              //     });
+              // })
+
+
+
+              console.log("storing");
+              this.storage.set("lieux", {"date" : date_now, "lieux": datas});
+              this.storage.get('lieux').then((lieux) => {
+                  this.date_datas = lieux.date;
+                  this.loading.dismissAll();
+              });
 
             });
     } else{

@@ -9,6 +9,7 @@ import { FilePath } from '@ionic-native/file-path';
 
 import { Camera } from '@ionic-native/camera';
 import { NativeStorage } from '@ionic-native/native-storage';
+import { Storage } from '@ionic/storage';
 
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Network } from '@ionic-native/network';
@@ -45,11 +46,13 @@ export class LieuDetailPage {
   	lieu_str:any;
   	lieu_str_all:any;
   	base64:any;
+  	weekNo: any;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public rezoom: RezoomProvider, private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController, public nativeStorage: NativeStorage,
   		private emailComposer: EmailComposer,
-  		private network: Network
+  		private network: Network,
+  		private storage: Storage
   	) {
   	this.id_lieu = this.navParams.get('id_lieu'); 
 
@@ -64,10 +67,11 @@ export class LieuDetailPage {
   ionViewDidLoad() {
   	var d = Date.now();
 	var date = new Date(d);
-	var month = date.getMonth()+1;
+	var month = date.getMonth()+1 ;
 
-	this.date_now = ""+date.getFullYear()+"-"+month+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-  	// watch network for a disconnect
+	this.date_now = (date.getDate() < 10 ? "0"+date.getDate() : date.getDate() )+"/"+(month < 10 ? "0"+month : month)+"/"+date.getFullYear()+" à "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+    this.weekNo = this.getWeekNumber(date);
+    // watch network for a disconnect
   	// var networkState = navigator.connection.type;
    //  var states = {};
    //  states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -80,17 +84,17 @@ export class LieuDetailPage {
    //  states[Connection.NONE]     = 'No network connection';
 
 	if(!navigator.onLine){
-		alert("not online");
-
-	  this.nativeStorage.getItem("lieux").then( lieux => {
+		
+	  this.storage.get('lieux').then((lieux) => {
 	  	this.lieu_str_all = JSON.stringify(lieux);
 	  	
-	  	alert("id lieu :"+ this.id_lieu);
-	  	let lieu = lieux.value.filter(elt =>  elt.lieu.id_lieux_rezoom == this.id_lieu);
-	  	alert(lieu.nom_lieux);
+	  	console.log("id lieu :"+ this.id_lieu);
+	  	console.log(lieux);
+	  	let lieu = lieux.lieux.filter(elt =>  elt.lieu.id_lieux_rezoom == this.id_lieu)[0];
+	  	console.log(lieu);
 	  	this.lieu = lieu.lieu;
 	  	this.campagnes = lieu.campagnes;
-	  	this.lieu_str =lieu;
+	  	// this.lieu_str =lieu;
 
 	  }, error => {
 	  	alert("Vos données locales ne sont pas à jour, veuillez les mettre à jour en vous connectant sur wifi.");
@@ -121,6 +125,20 @@ export class LieuDetailPage {
 
   	
   }
+
+  	public getWeekNumber(d) {
+	    // Copy date so don't modify original
+	    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+	    // Set to nearest Thursday: current date + 4 - current day number
+	    // Make Sunday's day number 7
+	    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+	    // Get first day of year
+	    var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+	    // Calculate full weeks to nearest Thursday
+	    var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+	    // Return array of year and week number
+	    return weekNo;
+	}
 
   public login(){
 
