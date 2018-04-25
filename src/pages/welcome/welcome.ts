@@ -68,7 +68,12 @@ export class WelcomePage {
   }
 
   upload(){
-    this.navCtrl.push('UploadPage');
+    if(navigator.onLine){
+      this.navCtrl.push('UploadPage');
+    }else{
+      alert("Connectez vous à un réseau wifi!");
+    }
+    
   }
 
   logout(){
